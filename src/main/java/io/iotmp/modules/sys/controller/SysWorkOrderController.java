@@ -11,7 +11,12 @@ package io.iotmp.modules.sys.controller;
 import io.iotmp.common.utils.PageUtils;
 import io.iotmp.common.utils.R;
 import io.iotmp.modules.sys.service.SysLogService;
+import io.iotmp.modules.sys.service.SysWorkOrderService;
+import io.iotmp.modules.sys.vo.request.WorkOrderReq;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,7 +28,7 @@ import java.util.Map;
 
 
 /**
- * 系统日志
+ * 工单流程
  *
  * @author changhong.yan
  */
@@ -34,19 +39,31 @@ import java.util.Map;
 @RequestMapping(value = "/api/v1/sys/workorder", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SysWorkOrderController {
     @Autowired
-    private SysLogService sysLogService;
+    private SysWorkOrderService sysWorkOrderService;
 
     /**
      * 列表
      */
+    @ApiModelProperty(value = "根据状态和关键字查询列表")
     @ResponseBody
-    @GetMapping("/syslog/list")
+    @GetMapping("/list/{userName}")
     //@RequiresPermissions("sys:log:list")
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = sysLogService.queryPage(params);
-
+    public R list(@ApiParam(value = "用户名称", required = true, defaultValue = "admin")
+                  @PathVariable(name = "userName") String userName, WorkOrderReq workOrderReq) {
+        PageUtils page = sysWorkOrderService.queryPage(userName, workOrderReq);
         return R.ok().put("data", page);
     }
+
+    @ApiOperation("批量删除工单")
+    @PostMapping("/delete")
+    public R delete(@RequestBody Long[] orderIds) {
+        if (orderIds.length == 0) {
+            return R.error("请勾选需要删除的工单");
+        }
+        sysWorkOrderService.deleteBatch(orderIds);
+        return R.ok();
+    }
+
 
     @ResponseBody
     @GetMapping("/total")
