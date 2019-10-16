@@ -14,6 +14,9 @@ import io.iotmp.modules.sys.entity.SysLogEntity;
 import io.iotmp.modules.sys.entity.SysWorkOrderEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 工单管理
  *
@@ -21,5 +24,9 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SysWorkOrderDao extends BaseMapper<SysWorkOrderEntity> {
+
+    List<Map<String, Object>> getTimeListByOrderId(Long id);
+
+    List<SysWorkOrderEntity> detail(Long id);
 
 }

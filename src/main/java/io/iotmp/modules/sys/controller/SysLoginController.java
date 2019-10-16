@@ -44,7 +44,7 @@ import java.util.Map;
 @Slf4j
 @Api(description = "用户登陆接口")
 @RestController
-@RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/user", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SysLoginController extends AbstractController {
     @Autowired
     private SysUserService sysUserService;
@@ -78,6 +78,7 @@ public class SysLoginController extends AbstractController {
     @PostMapping("/sys/login")
     public Map<String, Object> login(@RequestBody SysLoginForm form, HttpServletRequest httpServletRequest) throws IOException {
         String ip = getIpAddress(httpServletRequest);
+        String userAgent = httpServletRequest.getHeader("user-agent");
         log.info("ip:{}", ip);
         //用户信息
         SysUserEntity user = sysUserService.queryByUserName(form.getUserName());
@@ -103,6 +104,8 @@ public class SysLoginController extends AbstractController {
         sysLogEntity.setCreateDate(new Date());
         sysLogEntity.setIp(ip);
         sysLogEntity.setType(0);
+        sysLogEntity.setUserAgent(userAgent);
+        sysLogEntity.setLoginTime(new Date());
         sysLogService.save(sysLogEntity);
         //生成token，并保存到数据库
         R r = sysUserTokenService.createToken(user.getUserId());
@@ -140,7 +143,18 @@ public class SysLoginController extends AbstractController {
      * 退出
      */
     @PostMapping("/sys/logout")
-    public R logout() {
+    public R logout(HttpServletRequest httpServletRequest) throws Exception{
+        String ip = getIpAddress(httpServletRequest);
+        String userAgent = httpServletRequest.getHeader("user-agent");
+        SysLogEntity sysLogEntity = new SysLogEntity();
+        //sysLogEntity.setUsername(user.getUsername());
+        sysLogEntity.setDept("");
+        sysLogEntity.setCreateDate(new Date());
+        sysLogEntity.setIp(ip);
+        sysLogEntity.setType(0);
+        sysLogEntity.setUserAgent(userAgent);
+        sysLogEntity.setLogoutTime(new Date());
+        sysLogService.save(sysLogEntity);
         sysUserTokenService.logout(getUserId());
         return R.ok();
     }

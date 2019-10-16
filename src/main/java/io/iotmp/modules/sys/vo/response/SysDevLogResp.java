@@ -47,11 +47,13 @@ public class SysDevLogResp implements Serializable {
     @Excel(name = "操作时间", format = "yyyy-mm-dd hh:mm:ss")
     private Date createDate;
     //所属部门
-    @Excel(name = "所属部门")
+    //@Excel(name = "所属部门")
     private String dept;
     //设备名称
     @Excel(name = "设备名称")
     private String deviceName;
     //日志类型
     private Integer type;
+    @Excel(name = "操作内容")
+    private String operationContent;
 }

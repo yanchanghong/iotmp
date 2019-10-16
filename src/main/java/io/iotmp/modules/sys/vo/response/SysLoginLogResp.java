@@ -43,13 +43,17 @@ public class SysLoginLogResp implements Serializable {
     @Excel(name = "ip")
     private String ip;
     //创建时间
-    @Excel(name = "登录时间", format = "yyyy-mm-dd hh:mm:ss")
     private Date createDate;
     //所属部门
-    @Excel(name = "所属部门")
     private String dept;
     //设备名称
     private String deviceName;
     //日志类型
     private Integer type;
+    @Excel(name = "用户代理")
+    private String userAgent;
+    @Excel(name = "登录时间", format = "yyyy-mm-dd hh:mm:ss")
+    private Date loginTime;
+    @Excel(name = "登出时间", format = "yyyy-mm-dd hh:mm:ss")
+    private Date logoutTime;
 }

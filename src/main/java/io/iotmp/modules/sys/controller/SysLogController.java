@@ -58,6 +58,7 @@ public class SysLogController {
     /**
      * 列表
      */
+    @ApiOperation(value = "日志列表")
     @ResponseBody
     @GetMapping("/syslog/list")
     //@RequiresPermissions("sys:log:list")
@@ -81,8 +82,10 @@ public class SysLogController {
                 SysLoginLogResp sysLoginLogResp = new SysLoginLogResp();
                 sysLoginLogResp.setIp(sysLogEntity.getIp());
                 sysLoginLogResp.setUsername(sysLogEntity.getUsername());
-                sysLoginLogResp.setDept(sysLogEntity.getDept());
                 sysLoginLogResp.setCreateDate(sysLogEntity.getCreateDate());
+                sysLoginLogResp.setLoginTime(sysLogEntity.getLoginTime());
+                sysLoginLogResp.setLogoutTime(sysLogEntity.getLogoutTime());
+                sysLoginLogResp.setUserAgent(sysLogEntity.getUserAgent());
                 sysLoginLogResps.add(sysLoginLogResp);
             }
             try {
@@ -111,6 +114,7 @@ public class SysLogController {
                 sysLoginLogResp.setCreateDate(sysLogEntity.getCreateDate());
                 sysLoginLogResp.setOperation(sysLogEntity.getOperation());
                 sysLoginLogResp.setDeviceName(sysLogEntity.getDeviceName());
+                sysLoginLogResp.setOperationContent(sysLogEntity.getOperationContent());
                 sysDevLogResps.add(sysLoginLogResp);
             }
             try {
@@ -134,7 +138,7 @@ public class SysLogController {
     }
 
     @ApiOperation("删除日志")
-    @PostMapping("/delete")
+    @PostMapping("/syslog/delete")
     public R delete(@RequestBody Long[] logIds) {
         if (logIds.length == 0) {
             return R.error("请勾选需要删除的日志");

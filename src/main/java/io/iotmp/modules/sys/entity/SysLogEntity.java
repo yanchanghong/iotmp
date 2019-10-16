@@ -54,4 +54,12 @@ public class SysLogEntity implements Serializable {
     private String deviceName;
     //日志类型
     private Integer type;
+
+    private String userAgent;
+
+    private Date loginTime;
+
+    private Date logoutTime;
+
+    private String operationContent;
 }

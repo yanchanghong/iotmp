@@ -12,9 +12,12 @@ package io.iotmp.modules.sys.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.iotmp.common.utils.PageUtils;
 import io.iotmp.modules.sys.entity.SysLogEntity;
+import io.iotmp.modules.sys.entity.SysUserEntity;
 import io.iotmp.modules.sys.entity.SysWorkOrderEntity;
-import io.iotmp.modules.sys.vo.request.WorkOrderReq;
+import io.iotmp.modules.sys.vo.request.*;
+import io.iotmp.modules.sys.vo.response.TimeListResp;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -28,4 +31,16 @@ public interface SysWorkOrderService extends IService<SysWorkOrderEntity> {
     PageUtils queryPage(String userName, WorkOrderReq workOrderReq);
 
     void deleteBatch(Long[] orderIds);
+
+    void createWorkOrder(AddWorkOrderReq addWorkOrderReq);
+
+    void finishWorkOrder(FinishWorkOrderReq finishWorkOrderReq);
+
+    void refuseWorkOrder(RefuseWorkOrderReq refuseWorkOrderReq);
+
+    void redistributionWorkOrder(RedistributionWorkOrderReq refuseWorkOrderReq);
+
+    List<TimeListResp> getTimeListByOrderId(Long id);
+
+    List<SysWorkOrderEntity> detail(Long id);
 }
