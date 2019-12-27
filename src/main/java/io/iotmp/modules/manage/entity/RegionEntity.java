@@ -1,11 +1,13 @@
 package io.iotmp.modules.manage.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName
@@ -30,4 +32,6 @@ public class RegionEntity implements Serializable {
     private Integer type;// 类型 1:图片，2：地图
     private Date createTime;
     private Date updateTime;
+    @TableField(exist = false)
+    private List<RegionEntity> children; //节点集合
 }

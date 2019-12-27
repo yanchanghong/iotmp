@@ -15,10 +15,11 @@ import io.iotmp.modules.manage.vo.request.UpdateRegionReq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.List;
 
 @Service("RegionService")
 @Slf4j
@@ -37,8 +38,14 @@ public class RegionServiceImpl extends ServiceImpl<SystemRegionDao, RegionEntity
         params.put("pageSize", searchRegionReq.getPageSize() + "");
         IPage<RegionEntity> page = this.page(
                 new Query<RegionEntity>().getPage(params),
-                new QueryWrapper<RegionEntity>().orderByDesc("create_time")
+                new QueryWrapper<RegionEntity>().isNull("parent_id").orderByDesc("create_time")
         );
+
+        List<RegionEntity> sysRegionList = page.getRecords();
+        for (RegionEntity Region : sysRegionList) {
+            List<RegionEntity> devRegionList = baseMapper.selectList(new QueryWrapper<RegionEntity>().eq("parent_id", Region.getId()).orderByDesc("create_time"));
+            Region.setChildren(devRegionList);
+        }
         return new PageUtils(page);
     }
 
@@ -86,4 +93,5 @@ public class RegionServiceImpl extends ServiceImpl<SystemRegionDao, RegionEntity
     public void deleteById(Long id) {
         baseMapper.deleteById(id);
     }
+
 }
