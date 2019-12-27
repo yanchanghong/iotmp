@@ -20,7 +20,7 @@ import io.iotmp.modules.manage.service.RegionService;
  **/
 @RestController
 @Api(tags = "区域管理")
-@RequestMapping(value = "/api1/config/Region")
+@RequestMapping(value = "/api/v1/config/project/region")
 public class SystemRegionController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class SystemRegionController {
 
     @ApiOperation(value = "获取设备列表", notes = "根据设备名称查询设备列表")
     @ResponseBody
-    @GetMapping("/")
+    @GetMapping("/list")
     public R listRegion(SearchRegionReq searchRegionReq) {
         return R.ok().put("data", RegionService.queryList(searchRegionReq));
     }
