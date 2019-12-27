@@ -26,21 +26,21 @@ public class SystemRegionController {
     @Autowired
     private RegionService RegionService;
 
-    @ApiOperation(value = "获取设备列表", notes = "根据设备名称查询设备列表")
+    @ApiOperation(value = "获取区域列表", notes = "获取区域列表")
     @ResponseBody
     @GetMapping("/list")
     public R listRegion(SearchRegionReq searchRegionReq) {
         return R.ok().put("data", RegionService.queryList(searchRegionReq));
     }
 
-    @ApiOperation(value = "添加", notes = "添加系统，添加设备，添加点位")
+    @ApiOperation(value = "添加区域", notes = "添加区域")
     @ResponseBody
     @PostMapping("/add")
     public R add(@RequestBody AddRegionReq addRegionReq){
         RegionService.add(addRegionReq);
         return R.ok();
     }
-    @ApiOperation(value = "修改区域", notes = "修改系统，修改设备，修改点位")
+    @ApiOperation(value = "修改区域", notes = "修改区域")
     @ResponseBody
     @PostMapping("/update")
     public R update(@RequestBody UpdateRegionReq updateRegionReq) {
