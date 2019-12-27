@@ -44,7 +44,7 @@ import java.util.*;
  */
 @Slf4j
 @Controller
-@Api(description = "WIFI设备")
+@Api(tags = "WIFI设备")
 @RestController
 @RequestMapping(value = "/api/v1/sys/wifi", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SysWIFIController {

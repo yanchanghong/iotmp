@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package io.iotmp.modules.app.interceptor;
 
@@ -26,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 权限(Token)验证
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Yanchanghong
  */
 @Component
 public class AuthorizationInterceptor extends HandlerInterceptorAdapter {

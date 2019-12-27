@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package io.iotmp.modules.sys.service.impl;
 
@@ -36,7 +30,8 @@ public class SysUserTokenServiceImpl extends ServiceImpl<SysUserTokenDao, SysUse
 		Date expireTime = new Date(now.getTime() + EXPIRE * 1000);
 
 		//判断是否生成过token
-		SysUserTokenEntity tokenEntity = this.getById(userId);
+		//SysUserTokenEntity tokenEntity = this.getById(userId);
+		SysUserTokenEntity tokenEntity = null;
 		if(tokenEntity == null){
 			tokenEntity = new SysUserTokenEntity();
 			tokenEntity.setUserId(userId);

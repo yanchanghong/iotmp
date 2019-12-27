@@ -47,12 +47,18 @@ public class SysParkLotServiceImpl extends ServiceImpl<SysParkLotDao, SyParkLotR
                         new QueryWrapper<SyParkLotRecordEntity>().eq(true, "region", region).orderByAsc("create_date")
                 );
                 return new PageUtils(page);
-            } else {
+            } else if(params.get("region") != null && params.get("platNumber") != null){
                 platNumber = ((String) params.get("platNumber"));
                 region = ((String) params.get("region"));
                 IPage<SyParkLotRecordEntity> page = this.page(
                         new Query<SyParkLotRecordEntity>().getPage(params),
                         new QueryWrapper<SyParkLotRecordEntity>().like(true, "plat_number", platNumber).eq(true, "region", region).orderByAsc("create_date")
+                );
+                return new PageUtils(page);
+            }else{
+                IPage<SyParkLotRecordEntity> page = this.page(
+                        new Query<SyParkLotRecordEntity>().getPage(params),
+                        new QueryWrapper<SyParkLotRecordEntity>().orderByAsc("create_date")
                 );
                 return new PageUtils(page);
             }

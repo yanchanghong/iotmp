@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package io.iotmp.modules.sys.controller;
 
@@ -16,6 +10,7 @@ import io.iotmp.common.validator.ValidatorUtils;
 import io.iotmp.modules.sys.entity.SysRoleEntity;
 import io.iotmp.modules.sys.service.SysRoleMenuService;
 import io.iotmp.modules.sys.service.SysRoleService;
+import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +22,11 @@ import java.util.Map;
 /**
  * 角色管理
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Yanchanghong
  */
 @RestController
 @RequestMapping("/sys/role")
+@Api(tags = "角色管理")
 public class SysRoleController extends AbstractController {
 	@Autowired
 	private SysRoleService sysRoleService;
@@ -57,7 +53,7 @@ public class SysRoleController extends AbstractController {
 	 * 角色列表
 	 */
 	@GetMapping("/select")
-	@RequiresPermissions("sys:role:select")
+	//@RequiresPermissions("sys:role:select")
 	public R select(){
 		Map<String, Object> map = new HashMap<>();
 		

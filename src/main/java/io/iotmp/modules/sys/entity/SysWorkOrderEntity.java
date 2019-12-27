@@ -45,4 +45,5 @@ public class SysWorkOrderEntity implements Serializable {
     private String remark;
     private Date completionTime;
     private Long parentId;
+    private Long orgId;
 }

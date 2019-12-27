@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package io.iotmp.modules.sys.controller;
 import io.iotmp.common.annotation.SysLog;
@@ -14,6 +8,7 @@ import io.iotmp.common.utils.R;
 import io.iotmp.modules.sys.entity.SysMenuEntity;
 import io.iotmp.modules.sys.service.ShiroService;
 import io.iotmp.modules.sys.service.SysMenuService;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +20,11 @@ import java.util.Set;
 /**
  * 系统菜单
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Yanchanghong
  */
 @RestController
 @RequestMapping("/sys/menu")
+@Api(tags = "系统菜单")
 public class SysMenuController extends AbstractController {
 	@Autowired
 	private SysMenuService sysMenuService;

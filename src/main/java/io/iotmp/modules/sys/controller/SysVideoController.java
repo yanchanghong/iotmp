@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @Slf4j
 @Controller
-@Api(description = "视频监控管理")
+@Api(tags = "视频监控管理")
 @RestController
 @RequestMapping(value = "/api/v1/sys/video", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SysVideoController {

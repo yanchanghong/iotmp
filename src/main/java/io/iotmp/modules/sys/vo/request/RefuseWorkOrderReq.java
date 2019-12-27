@@ -13,5 +13,4 @@ import lombok.Data;
 public class RefuseWorkOrderReq {
     private Long id;
     private String refuseReson;
-    private String username;
 }

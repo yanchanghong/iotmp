@@ -48,7 +48,7 @@ import java.util.Map;
  */
 @Slf4j
 @Controller
-@Api(description = "停车场管理系统")
+@Api(tags = "停车场管理系统")
 @RestController
 @RequestMapping(value = "/api/v1/parklot", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SysParkLotController {

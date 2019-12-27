@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package io.iotmp.modules.sys.controller;
 
@@ -24,17 +18,17 @@ import java.util.Map;
 /**
  * 系统配置信息
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Yanchanghong
  */
 @RestController
 @RequestMapping("/sys/config")
 public class SysConfigController extends AbstractController {
-	@Autowired
+	/*@Autowired
 	private SysConfigService sysConfigService;
 	
-	/**
+	*//**
 	 * 所有配置列表
-	 */
+	 *//*
 	@GetMapping("/list")
 	@RequiresPermissions("sys:config:list")
 	public R list(@RequestParam Map<String, Object> params){
@@ -44,9 +38,9 @@ public class SysConfigController extends AbstractController {
 	}
 	
 	
-	/**
+	*//**
 	 * 配置信息
-	 */
+	 *//*
 	@GetMapping("/info/{id}")
 	@RequiresPermissions("sys:config:info")
 	public R info(@PathVariable("id") Long id){
@@ -55,9 +49,9 @@ public class SysConfigController extends AbstractController {
 		return R.ok().put("config", config);
 	}
 	
-	/**
+	*//**
 	 * 保存配置
-	 */
+	 *//*
 	@SysLog("保存配置")
 	@PostMapping("/save")
 	@RequiresPermissions("sys:config:save")
@@ -69,9 +63,9 @@ public class SysConfigController extends AbstractController {
 		return R.ok();
 	}
 	
-	/**
+	*//**
 	 * 修改配置
-	 */
+	 *//*
 	@SysLog("修改配置")
 	@PostMapping("/update")
 	@RequiresPermissions("sys:config:update")
@@ -83,9 +77,9 @@ public class SysConfigController extends AbstractController {
 		return R.ok();
 	}
 	
-	/**
+	*//**
 	 * 删除配置
-	 */
+	 *//*
 	@SysLog("删除配置")
 	@PostMapping("/delete")
 	@RequiresPermissions("sys:config:delete")
@@ -94,5 +88,5 @@ public class SysConfigController extends AbstractController {
 		
 		return R.ok();
 	}
-
+*/
 }

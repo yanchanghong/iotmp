@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @Slf4j
 @Controller
-@Api(description = "空气质量系统")
+@Api(tags = "空气质量系统")
 @RestController
 @RequestMapping(value = "/api/v1/sys/air", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SysAirController {

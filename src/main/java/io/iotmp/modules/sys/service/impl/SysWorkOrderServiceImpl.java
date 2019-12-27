@@ -11,17 +11,20 @@ package io.iotmp.modules.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.iotmp.common.exception.RRException;
 import io.iotmp.common.utils.PageUtils;
 import io.iotmp.common.utils.Query;
 import io.iotmp.modules.sys.dao.SysLogDao;
 import io.iotmp.modules.sys.dao.SysWorkOrderDao;
 import io.iotmp.modules.sys.entity.SysAlarmEntity;
 import io.iotmp.modules.sys.entity.SysLogEntity;
+import io.iotmp.modules.sys.entity.SysUserTokenEntity;
 import io.iotmp.modules.sys.entity.SysWorkOrderEntity;
 import io.iotmp.modules.sys.service.SysLogService;
 import io.iotmp.modules.sys.service.SysWorkOrderService;
 import io.iotmp.modules.sys.vo.request.*;
 import io.iotmp.modules.sys.vo.response.TimeListResp;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -30,19 +33,30 @@ import java.util.*;
 
 
 @Service("sysWorkOrderService")
+@Slf4j
 public class SysWorkOrderServiceImpl extends ServiceImpl<SysWorkOrderDao, SysWorkOrderEntity> implements SysWorkOrderService {
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
-    public PageUtils queryPage(String userName, WorkOrderReq workOrderReq) {
+    public PageUtils queryPage(Long orgId, String userName, WorkOrderReq workOrderReq) {
+        log.info("WorkOrderReq:{}", workOrderReq);
         Map<String, Object> params = new HashMap<>();
+        if (workOrderReq.getPage() == null) {
+            workOrderReq.setPage(1L);
+        }
+        if (workOrderReq.getPageSize() == null) {
+            workOrderReq.setPageSize(10L);
+        }
         params.put("page", workOrderReq.getPage() + "");
         params.put("pageSize", workOrderReq.getPageSize() + "");
         IPage<SysWorkOrderEntity> page = this.page(
                 new Query<SysWorkOrderEntity>().getPage(params),
-                new QueryWrapper<SysWorkOrderEntity>().eq("auditor_user", userName).eq(workOrderReq.getStatus().intValue() != 6, "status", workOrderReq.getStatus())
-                        .and(StringUtils.isNotEmpty(workOrderReq.getKeyword()), i -> i.like(StringUtils.isNotEmpty(workOrderReq.getKeyword()), "title", workOrderReq.getKeyword()).or().like(StringUtils.isNotEmpty(workOrderReq.getKeyword()), "title", workOrderReq.getKeyword()))
+                new QueryWrapper<SysWorkOrderEntity>().eq(userName.equals("admin"), "auditor_user", userName)
+                        .eq(!userName.equals("admin"), "operation_user", userName)
+                        .eq("org_id", orgId)
+                        .eq(workOrderReq.getStatus().intValue() != 6, "status", workOrderReq.getStatus())
+                        .and(StringUtils.isNotEmpty(workOrderReq.getKeyword()), i -> i.like(StringUtils.isNotEmpty(workOrderReq.getKeyword()), "title", workOrderReq.getKeyword()).or().like(StringUtils.isNotEmpty(workOrderReq.getKeyword()), "operation_user", workOrderReq.getKeyword()))
                         .eq("parent_id", 0).orderByDesc("create_time")
         );
         return new PageUtils(page);
@@ -50,11 +64,20 @@ public class SysWorkOrderServiceImpl extends ServiceImpl<SysWorkOrderDao, SysWor
 
     @Override
     public void deleteBatch(Long[] logIds) {
-        this.removeByIds(Arrays.asList(logIds));
+        for (Long id : logIds) {
+            SysWorkOrderEntity sysWorkOrderEntity = this.getById(id);
+            if (sysWorkOrderEntity != null) {
+                List<SysWorkOrderEntity> result = baseMapper.detail(id);
+                for (SysWorkOrderEntity orderEntity : result) {
+                    this.removeById(orderEntity.getId());
+                }
+            }
+            this.removeById(id);
+        }
     }
 
     @Override
-    public void createWorkOrder(AddWorkOrderReq addWorkOrderReq) {
+    public void createWorkOrder(Long orgId, AddWorkOrderReq addWorkOrderReq) {
         SysWorkOrderEntity sysWorkOrderEntity = new SysWorkOrderEntity();
         sysWorkOrderEntity.setTitle(addWorkOrderReq.getTitle());
         sysWorkOrderEntity.setDescription(addWorkOrderReq.getDescription());
@@ -63,6 +86,10 @@ public class SysWorkOrderServiceImpl extends ServiceImpl<SysWorkOrderDao, SysWor
         sysWorkOrderEntity.setCreateTime(new Date());
         sysWorkOrderEntity.setStatus(1);
         sysWorkOrderEntity.setDistributionTime(new Date());
+        sysWorkOrderEntity.setOrgId(orgId);
+        this.save(sysWorkOrderEntity);
+        sysWorkOrderEntity.setParentId(sysWorkOrderEntity.getId());
+        sysWorkOrderEntity.setId(null);
         this.save(sysWorkOrderEntity);
     }
 
@@ -78,34 +105,57 @@ public class SysWorkOrderServiceImpl extends ServiceImpl<SysWorkOrderDao, SysWor
 
     @Override
     public void refuseWorkOrder(RefuseWorkOrderReq refuseWorkOrderReq) {
-        SysWorkOrderEntity sysWorkOrderEntity = new SysWorkOrderEntity();
-        sysWorkOrderEntity.setRefuseTime(new Date());
+        SysWorkOrderEntity sysWorkOrderEntity = this.getById(refuseWorkOrderReq.getId());
+        if (sysWorkOrderEntity == null) {
+            throw new RRException("拒绝工单失败");
+        }
+        Date refuseDate = new Date();
+        sysWorkOrderEntity.setRefuseTime(refuseDate);
         sysWorkOrderEntity.setRefuseReson(refuseWorkOrderReq.getRefuseReson());
         sysWorkOrderEntity.setStatus(0);
         sysWorkOrderEntity.setId(refuseWorkOrderReq.getId());
         this.saveOrUpdate(sysWorkOrderEntity);
-        sysWorkOrderEntity.setId(null);
-        sysWorkOrderEntity.setParentId(refuseWorkOrderReq.getId());
-        sysWorkOrderEntity.setStatus(0);
-        sysWorkOrderEntity.setCreateTime(new Date());
-        this.save(sysWorkOrderEntity);
+        SysWorkOrderEntity workOrderEntity = new SysWorkOrderEntity();
+        workOrderEntity.setTitle(sysWorkOrderEntity.getTitle());
+        workOrderEntity.setDescription(sysWorkOrderEntity.getDescription());
+        workOrderEntity.setAuditorUser(sysWorkOrderEntity.getAuditorUser());
+        workOrderEntity.setId(null);
+        workOrderEntity.setParentId(refuseWorkOrderReq.getId());
+        workOrderEntity.setStatus(0);
+        workOrderEntity.setCreateTime(new Date());
+        workOrderEntity.setRefuseTime(refuseDate);
+        workOrderEntity.setRefuseReson(refuseWorkOrderReq.getRefuseReson());
+        workOrderEntity.setOperationUser(sysWorkOrderEntity.getOperationUser());
+        workOrderEntity.setOrgId(sysWorkOrderEntity.getOrgId());
+        this.save(workOrderEntity);
     }
 
     @Override
     public void redistributionWorkOrder(RedistributionWorkOrderReq redistributionWorkOrder) {
-        SysWorkOrderEntity sysWorkOrderEntity = new SysWorkOrderEntity();
+        SysWorkOrderEntity sysWorkOrderEntity = this.getById(redistributionWorkOrder.getId());
+        if (sysWorkOrderEntity == null) {
+            throw new RRException("重派工单失败");
+        }
+        Date createTime = new Date();
         sysWorkOrderEntity.setStatus(1);
-        sysWorkOrderEntity.setId(redistributionWorkOrder.getId());
-        this.saveOrUpdate(sysWorkOrderEntity);
-        sysWorkOrderEntity.setId(null);
-        sysWorkOrderEntity.setRedistributionTime(new Date());
         sysWorkOrderEntity.setTitle(redistributionWorkOrder.getTitle());
         sysWorkOrderEntity.setDescription(redistributionWorkOrder.getDescription());
         sysWorkOrderEntity.setOperationUser(redistributionWorkOrder.getOperationUser());
-        sysWorkOrderEntity.setStatus(1);
-        sysWorkOrderEntity.setParentId(redistributionWorkOrder.getId());
-        sysWorkOrderEntity.setCreateTime(new Date());
-        this.save(sysWorkOrderEntity);
+        sysWorkOrderEntity.setCreateTime(createTime);
+        sysWorkOrderEntity.setRedistributionTime(createTime);
+        sysWorkOrderEntity.setUpdateTime(new Date());
+        this.saveOrUpdate(sysWorkOrderEntity);
+        SysWorkOrderEntity workOrderEntity = new SysWorkOrderEntity();
+        workOrderEntity.setRedistributionTime(new Date());
+        workOrderEntity.setTitle(redistributionWorkOrder.getTitle());
+        workOrderEntity.setDescription(redistributionWorkOrder.getDescription());
+        workOrderEntity.setOperationUser(redistributionWorkOrder.getOperationUser());
+        workOrderEntity.setStatus(1);
+        workOrderEntity.setParentId(redistributionWorkOrder.getId());
+        workOrderEntity.setCreateTime(createTime);
+        workOrderEntity.setRedistributionTime(createTime);
+        workOrderEntity.setOrgId(sysWorkOrderEntity.getOrgId());
+        this.save(workOrderEntity);
     }
 
     @Override
@@ -140,7 +190,7 @@ public class SysWorkOrderServiceImpl extends ServiceImpl<SysWorkOrderDao, SysWor
         List<SysWorkOrderEntity> list = new ArrayList<>();
         SysWorkOrderEntity sysWorkOrderEntity = this.getById(id);
         if (sysWorkOrderEntity != null) {
-            list.add(sysWorkOrderEntity);
+            //list.add(sysWorkOrderEntity);
             List<SysWorkOrderEntity> result = baseMapper.detail(id);
             list.addAll(result);
             if (sysWorkOrderEntity.getStatus() != null && sysWorkOrderEntity.getStatus().intValue() == 2) {
@@ -148,5 +198,24 @@ public class SysWorkOrderServiceImpl extends ServiceImpl<SysWorkOrderDao, SysWor
             }
         }
         return list;
+    }
+
+    @Override
+    public Map<String, Object> totalWorkOrder(String userName, Long orgId) {
+        Map<String, Object> result = new HashMap<>();
+        if (userName.equals("admin")) {
+            int finishAmount = this.count(new QueryWrapper<SysWorkOrderEntity>().eq("auditor_user", userName).eq("org_id", orgId).eq("status", 2).eq("parent_id", 0));
+            int dealAmount = this.count(new QueryWrapper<SysWorkOrderEntity>().eq("auditor_user", userName).eq("org_id", orgId).eq("status", 1).eq("parent_id", 0));
+            int refuseAmount = this.count(new QueryWrapper<SysWorkOrderEntity>().eq("auditor_user", userName).eq("org_id", orgId).eq("status", 0).eq("parent_id", 0));
+            result.put("finishAmount", finishAmount);
+            result.put("dealAmount", dealAmount);
+            result.put("refuseAmount", refuseAmount);
+        } else {
+            int finishAmount = this.count(new QueryWrapper<SysWorkOrderEntity>().eq("operation_user", userName).eq("org_id", orgId).eq("status", 2).eq("parent_id", 0));
+            int dealAmount = this.count(new QueryWrapper<SysWorkOrderEntity>().eq("operation_user", userName).eq("org_id", orgId).eq("status", 1).eq("parent_id", 0));
+            result.put("finishAmount", finishAmount);
+            result.put("dealAmount", dealAmount);
+        }
+        return result;
     }
 }

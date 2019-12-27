@@ -29,9 +29,11 @@ public class SyParkLotRecordEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId
     private Long id;
-    private String platNumber;
+    private String platNumber;//车牌号
     private String region;
-    private String doorWay;
-    private String inAndOut;
+    private String doorWay;//入口
+    private String inAndOut;//出口
     private Date createDate;
+    private Date inTime;//进时间
+    private Date outTime;//出时间
 }

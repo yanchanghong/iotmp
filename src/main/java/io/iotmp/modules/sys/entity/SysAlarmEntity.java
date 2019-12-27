@@ -35,4 +35,5 @@ public class SysAlarmEntity implements Serializable {
     private String sysMenuType;
     private Date createTime;
     private Integer alarmLevel;
+    private Long orgId;
 }

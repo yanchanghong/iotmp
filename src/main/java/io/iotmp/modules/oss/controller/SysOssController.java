@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package io.iotmp.modules.oss.controller;
 
@@ -35,21 +29,21 @@ import java.util.Map;
 /**
  * 文件上传
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Yanchanghong
  */
 @RestController
 @RequestMapping("sys/oss")
 public class SysOssController {
-	@Autowired
+	/*@Autowired
 	private SysOssService sysOssService;
     @Autowired
     private SysConfigService sysConfigService;
 
     private final static String KEY = ConfigConstant.CLOUD_STORAGE_CONFIG_KEY;
 	
-	/**
+	*//**
 	 * 列表
-	 */
+	 *//*
 	@GetMapping("/list")
 	@RequiresPermissions("sys:oss:all")
 	public R list(@RequestParam Map<String, Object> params){
@@ -59,9 +53,9 @@ public class SysOssController {
 	}
 
 
-    /**
+    *//**
      * 云存储配置信息
-     */
+     *//*
     @GetMapping("/config")
     @RequiresPermissions("sys:oss:all")
     public R config(){
@@ -71,9 +65,9 @@ public class SysOssController {
     }
 
 
-	/**
+	*//**
 	 * 保存云存储配置信息
-	 */
+	 *//*
 	@PostMapping("/saveConfig")
 	@RequiresPermissions("sys:oss:all")
 	public R saveConfig(@RequestBody CloudStorageConfig config){
@@ -97,9 +91,9 @@ public class SysOssController {
 	}
 	
 
-	/**
+	*//**
 	 * 上传文件
-	 */
+	 *//*
 	@PostMapping("/upload")
 	@RequiresPermissions("sys:oss:all")
 	public R upload(@RequestParam("file") MultipartFile file) throws Exception {
@@ -121,9 +115,9 @@ public class SysOssController {
 	}
 
 
-	/**
+	*//**
 	 * 删除
-	 */
+	 *//*
 	@PostMapping("/delete")
 	@RequiresPermissions("sys:oss:all")
 	public R delete(@RequestBody Long[] ids){
@@ -131,5 +125,5 @@ public class SysOssController {
 
 		return R.ok();
 	}
-
+*/
 }

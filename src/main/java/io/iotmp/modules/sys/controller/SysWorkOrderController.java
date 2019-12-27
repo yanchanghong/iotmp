@@ -34,10 +34,10 @@ import java.util.Map;
  */
 @Slf4j
 @Controller
-@Api(description = "工单流程管理")
+@Api(tags = "工单流程管理")
 @RestController
 @RequestMapping(value = "/api/v1/sys/workorder", produces = MediaType.APPLICATION_JSON_VALUE)
-public class SysWorkOrderController {
+public class SysWorkOrderController extends AbstractController {
     @Autowired
     private SysWorkOrderService sysWorkOrderService;
 
@@ -46,11 +46,11 @@ public class SysWorkOrderController {
      */
     @ApiOperation(value = "根据状态和关键字查询列表")
     @ResponseBody
-    @GetMapping("/list/{userName}")
+    @GetMapping("/list")
     //@RequiresPermissions("sys:log:list")
-    public R list(@ApiParam(value = "用户名称", required = true, defaultValue = "admin")
-                  @PathVariable(name = "userName") String userName, WorkOrderReq workOrderReq) {
-        PageUtils page = sysWorkOrderService.queryPage(userName, workOrderReq);
+    public R list(WorkOrderReq workOrderReq) {
+        String userName = getUserName();
+        PageUtils page = sysWorkOrderService.queryPage(getUser().getOrgId(), userName, workOrderReq);
         return R.ok().put("data", page);
     }
 
@@ -67,7 +67,7 @@ public class SysWorkOrderController {
     @ApiOperation(value = "创建工单")
     @PostMapping("/create")
     public R createWorkOrder(@RequestBody AddWorkOrderReq addWorkOrderReq) {
-        sysWorkOrderService.createWorkOrder(addWorkOrderReq);
+        sysWorkOrderService.createWorkOrder(getUser().getOrgId(), addWorkOrderReq);
         return R.ok();
     }
 
@@ -107,10 +107,7 @@ public class SysWorkOrderController {
     @ResponseBody
     @GetMapping("/total")
     public R getTotal() {
-        Map<String, Object> params = new HashMap<>();
-        params.put("weekAmount", 900);
-        params.put("dealingAmount", 100);
-        params.put("unDealAmount", 100);
-        return R.ok().put("data", params);
+        String userName = getUserName();
+        return R.ok().put("data", sysWorkOrderService.totalWorkOrder(userName, getUser().getOrgId()));
     }
 }

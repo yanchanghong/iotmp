@@ -12,10 +12,7 @@ import io.iotmp.common.utils.R;
 import io.iotmp.modules.sys.entity.SysLogEntity;
 import io.iotmp.modules.sys.entity.SysUserEntity;
 import io.iotmp.modules.sys.form.SysLoginForm;
-import io.iotmp.modules.sys.service.SysCaptchaService;
-import io.iotmp.modules.sys.service.SysLogService;
-import io.iotmp.modules.sys.service.SysUserService;
-import io.iotmp.modules.sys.service.SysUserTokenService;
+import io.iotmp.modules.sys.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -42,9 +39,9 @@ import java.util.Map;
  * @Description 登陆相关
  */
 @Slf4j
-@Api(description = "用户登陆接口")
+@Api(tags = "用户登陆接口")
 @RestController
-@RequestMapping(value = "/api/v1/user", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SysLoginController extends AbstractController {
     @Autowired
     private SysUserService sysUserService;
@@ -54,10 +51,12 @@ public class SysLoginController extends AbstractController {
     private SysCaptchaService sysCaptchaService;
     @Autowired
     private SysLogService sysLogService;
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
 
-    /**
+    /* *//**
      * 验证码
-     */
+     *//*
     @GetMapping("captcha.jpg")
     public void captcha(HttpServletResponse response, String uuid) throws IOException {
         response.setHeader("Cache-Control", "no-store, no-cache");
@@ -70,6 +69,7 @@ public class SysLoginController extends AbstractController {
         ImageIO.write(image, "jpg", out);
         IOUtils.closeQuietly(out);
     }
+*/
 
     /**
      * 登录
@@ -81,7 +81,7 @@ public class SysLoginController extends AbstractController {
         String userAgent = httpServletRequest.getHeader("user-agent");
         log.info("ip:{}", ip);
         //用户信息
-        SysUserEntity user = sysUserService.queryByUserName(form.getUserName());
+        SysUserEntity user = sysUserService.queryByUserName(form.getUserName(), form.getOrgCode());
         if (user == null) {
             return R.error("此账号不存在，请联系管理员");
         }
@@ -111,6 +111,11 @@ public class SysLoginController extends AbstractController {
         R r = sysUserTokenService.createToken(user.getUserId());
         r.put("userName", sysLogEntity.getUsername());
         r.put("orgCode", form.getOrgCode());
+        if (user.getUserId().longValue() == 1) {
+            r.put("role", 1);
+        } else {
+            r.put("role", 2);
+        }
         return r;
     }
 
@@ -143,7 +148,7 @@ public class SysLoginController extends AbstractController {
      * 退出
      */
     @PostMapping("/sys/logout")
-    public R logout(HttpServletRequest httpServletRequest) throws Exception{
+    public R logout(HttpServletRequest httpServletRequest) throws Exception {
         String ip = getIpAddress(httpServletRequest);
         String userAgent = httpServletRequest.getHeader("user-agent");
         SysLogEntity sysLogEntity = new SysLogEntity();

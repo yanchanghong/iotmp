@@ -17,12 +17,15 @@ import io.iotmp.modules.sys.dao.SysAlarmDao;
 import io.iotmp.modules.sys.dao.SysLogDao;
 import io.iotmp.modules.sys.entity.SysAlarmEntity;
 import io.iotmp.modules.sys.entity.SysLogEntity;
+import io.iotmp.modules.sys.entity.SysWorkOrderEntity;
 import io.iotmp.modules.sys.service.SysAlarmService;
 import io.iotmp.modules.sys.service.SysLogService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -60,5 +63,18 @@ public class SysAlarmServiceImpl extends ServiceImpl<SysAlarmDao, SysAlarmEntity
                 QueryWrapper
         );
         return new PageUtils(page);
+    }
+
+    @Override
+    public PageUtils queryPage(Long orgId, Long regionId, String deviceType, String keyWord, Integer page, Integer pageSize) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("page", page);
+        params.put("pageSize", pageSize);
+        IPage<SysAlarmEntity> iPage = this.page(
+                new Query<SysAlarmEntity>().getPage(params),
+                new QueryWrapper<SysAlarmEntity>().eq("device_type", deviceType).eq("org_id", orgId)
+                        .and(StringUtils.isNotEmpty(keyWord), i -> i.like(StringUtils.isNotEmpty(keyWord), "device_name", keyWord).or().like(StringUtils.isNotEmpty(keyWord), "alarm_content", keyWord))
+                        .orderByDesc("create_time"));
+        return new PageUtils(iPage);
     }
 }

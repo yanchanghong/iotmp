@@ -48,10 +48,10 @@ import java.util.*;
  */
 @Slf4j
 @Controller
-@Api(description = "日志接口")
+@Api(tags = "日志接口")
 @RestController
 @RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
-public class SysLogController {
+public class SysLogController extends AbstractController {
     @Autowired
     private SysLogService sysLogService;
 
@@ -63,18 +63,19 @@ public class SysLogController {
     @GetMapping("/syslog/list")
     //@RequiresPermissions("sys:log:list")
     public R list(@RequestParam Map<String, Object> params) {
+        params.put("orgId", getUser().getOrgId());
         PageUtils page = sysLogService.queryPage(params);
-
         return R.ok().put("data", page);
     }
 
     @ApiOperation("日志导出")
     @GetMapping(value = "/syslog/export")
-    @ResponseBody
-    public R export(HttpServletRequest request, HttpServletResponse response,
+    public void export(HttpServletRequest request, HttpServletResponse response,
                     @RequestParam Map<String, Object> params) throws IOException {
-        PageUtils page = sysLogService.queryPage(params);
-        List<SysLogEntity> data = (List<SysLogEntity>) page.getList();
+        String logIds = (String)params.get("logIds");
+        String[] ids = logIds.split(",");
+        List<String> id = Arrays.asList(ids);
+        List<SysLogEntity> data =    (List<SysLogEntity>)sysLogService.listByIds(id);
         Integer type = Integer.parseInt((String) params.get("type"));
         if (type == 0) {
             List<SysLoginLogResp> sysLoginLogResps = new ArrayList<SysLoginLogResp>();
@@ -82,7 +83,7 @@ public class SysLogController {
                 SysLoginLogResp sysLoginLogResp = new SysLoginLogResp();
                 sysLoginLogResp.setIp(sysLogEntity.getIp());
                 sysLoginLogResp.setUsername(sysLogEntity.getUsername());
-                sysLoginLogResp.setCreateDate(sysLogEntity.getCreateDate());
+                //sysLoginLogResp.setCreateDate(sysLogEntity.getCreateDate());
                 sysLoginLogResp.setLoginTime(sysLogEntity.getLoginTime());
                 sysLoginLogResp.setLogoutTime(sysLogEntity.getLogoutTime());
                 sysLoginLogResp.setUserAgent(sysLogEntity.getUserAgent());
@@ -99,7 +100,7 @@ public class SysLogController {
                 out.close();
             } catch (IOException | ExcelExportException e) {
                 log.error("failed to export excel", e);
-                return R.ok();
+                //return R.ok();
 //            throw new NEException(NEError.WRITE_EXCEL_ERROR);
             } finally {
                 IOUtils.closeQuietly(response.getOutputStream());
@@ -108,9 +109,9 @@ public class SysLogController {
             List<SysDevLogResp> sysDevLogResps = new ArrayList<SysDevLogResp>();
             for (SysLogEntity sysLogEntity : data) {
                 SysDevLogResp sysLoginLogResp = new SysDevLogResp();
-                sysLoginLogResp.setIp(sysLogEntity.getIp());
                 sysLoginLogResp.setUsername(sysLogEntity.getUsername());
-                sysLoginLogResp.setDept(sysLogEntity.getDept());
+                sysLoginLogResp.setIp(sysLogEntity.getIp());
+                sysLoginLogResp.setDeviceName(sysLogEntity.getDeviceName());
                 sysLoginLogResp.setCreateDate(sysLogEntity.getCreateDate());
                 sysLoginLogResp.setOperation(sysLogEntity.getOperation());
                 sysLoginLogResp.setDeviceName(sysLogEntity.getDeviceName());
@@ -128,13 +129,12 @@ public class SysLogController {
                 out.close();
             } catch (IOException | ExcelExportException e) {
                 log.error("failed to export excel", e);
-                return R.ok();
+               // return R.ok();
 //            throw new NEException(NEError.WRITE_EXCEL_ERROR);
             } finally {
                 IOUtils.closeQuietly(response.getOutputStream());
             }
         }
-        return R.ok();
     }
 
     @ApiOperation("删除日志")

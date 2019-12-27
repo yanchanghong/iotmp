@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.iotmp.modules.sys.dao.SysLightDao">
+
+    <select id="totalEnergy" resultType="Double">
+        SELECT sum(sdpav.value) from sys_device dev
+        LEFT JOIN sys_points point on dev.id = point.device_id
+        LEFT JOIN sys_point_attr attr on (point.id = attr.point_id and attr.name = 'energy_consumption')
+        LEFT JOIN sys_device_point_attr_value sdpav on (attr.id = sdpav.point_attr_id and dev.id = sdpav.device_id)
+        WHERE dev.type = "light"
+        and dev.org_id = #{orgId}
+        and dev.region_id = #{regionId}
+        <if test="status != null">
+            and dev.`status` = #{status}
+        </if>
+    </select>
+</mapper>

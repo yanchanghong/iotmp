@@ -1,10 +1,4 @@
-/**
- * Copyright (c) 2016-2019 人人开源 All rights reserved.
- *
- * https://www.renren.io
- *
- * 版权所有，侵权必究！
- */
+
 
 package io.iotmp.modules.app.controller;
 
@@ -28,7 +22,7 @@ import java.util.Date;
 /**
  * 注册
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Yanchanghong
  */
 @RestController
 @RequestMapping("/app")
@@ -37,7 +31,7 @@ public class AppRegisterController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("register")
+   /* @PostMapping("register")
     @ApiOperation("注册")
     public R register(@RequestBody RegisterForm form){
         //表单校验
@@ -51,5 +45,5 @@ public class AppRegisterController {
         userService.save(user);
 
         return R.ok();
-    }
+    }*/
 }

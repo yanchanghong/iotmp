@@ -28,11 +28,11 @@ import java.util.Map;
  */
 public interface SysWorkOrderService extends IService<SysWorkOrderEntity> {
 
-    PageUtils queryPage(String userName, WorkOrderReq workOrderReq);
+    PageUtils queryPage(Long orgId, String userName, WorkOrderReq workOrderReq);
 
     void deleteBatch(Long[] orderIds);
 
-    void createWorkOrder(AddWorkOrderReq addWorkOrderReq);
+    void createWorkOrder(Long orgId, AddWorkOrderReq addWorkOrderReq);
 
     void finishWorkOrder(FinishWorkOrderReq finishWorkOrderReq);
 
@@ -43,4 +43,6 @@ public interface SysWorkOrderService extends IService<SysWorkOrderEntity> {
     List<TimeListResp> getTimeListByOrderId(Long id);
 
     List<SysWorkOrderEntity> detail(Long id);
+
+    Map<String, Object> totalWorkOrder(String userName, Long orgId);
 }

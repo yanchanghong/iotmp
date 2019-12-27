@@ -29,6 +29,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogDao, SysLogEntity> impl
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        Long orgId = (Long) params.get("orgId");
         if (params.get("startTime") != null && params.get("endTime") != null) {
             Long startTime = Long.valueOf((String) params.get("startTime"));
             Date start = new Date(startTime);
@@ -37,14 +38,14 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogDao, SysLogEntity> impl
             Integer type = Integer.parseInt((String) params.get("type"));
             IPage<SysLogEntity> page = this.page(
                     new Query<SysLogEntity>().getPage(params),
-                    new QueryWrapper<SysLogEntity>().eq(true, "type", type).between("create_date", start, end)
+                    new QueryWrapper<SysLogEntity>().eq(true, "type", type).eq("org_id", orgId).between("create_date", start, end)
             );
             return new PageUtils(page);
         } else {
             Integer type = Integer.parseInt((String) params.get("type"));
             IPage<SysLogEntity> page = this.page(
                     new Query<SysLogEntity>().getPage(params),
-                    new QueryWrapper<SysLogEntity>().eq(true, "type", type)
+                    new QueryWrapper<SysLogEntity>().eq(true, "type", type).eq("org_id", orgId)
             );
             return new PageUtils(page);
         }

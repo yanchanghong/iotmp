@@ -20,7 +20,7 @@ import java.util.Date;
 /**
  * 系统日志
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Yanchanghong
  */
 @Data
 @TableName("sys_log")
@@ -44,7 +44,7 @@ public class SysLogEntity implements Serializable {
     @Excel(name = "ip")
     private String ip;
     //创建时间
-    @Excel(name = "登录时间")
+    @Excel(name = "操作时间")
     private Date createDate;
     //所属部门
     @Excel(name = "所属部门")
@@ -58,8 +58,8 @@ public class SysLogEntity implements Serializable {
     private String userAgent;
 
     private Date loginTime;
-
+    @Excel(name = "登出时间")
     private Date logoutTime;
-
+    @Excel(name = "操作内容")
     private String operationContent;
 }

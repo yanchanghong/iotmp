@@ -13,5 +13,4 @@ import lombok.Data;
 public class FinishWorkOrderReq {
     private Long id;
     private String finishRemark;
-    private String userName;
 }
