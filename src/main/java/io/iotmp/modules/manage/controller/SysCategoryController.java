@@ -68,23 +68,5 @@ public class SysCategoryController {
         return R.ok();
     }
 
-    @ApiOperation(value = "获取点位类型列表", notes = "获取点位类型列表")
-    @ResponseBody
-    @GetMapping("/point/list")
-    public R ListPointType() {
-        List<PointTypeResp> list = new ArrayList<PointTypeResp>();
-        PointTypeResp pointTypeResp1 = new PointTypeResp();
-        pointTypeResp1.setTypeId(1);
-        pointTypeResp1.setTypeName("系统");
-        list.add(pointTypeResp1);
-        PointTypeResp pointTypeResp2 = new PointTypeResp();
-        pointTypeResp2.setTypeId(1);
-        pointTypeResp2.setTypeName("系统");
-        list.add(pointTypeResp2);
-        PointTypeResp pointTypeResp3 = new PointTypeResp();
-        pointTypeResp3.setTypeId(1);
-        pointTypeResp3.setTypeName("系统");
-        list.add(pointTypeResp3);
-        return R.ok().put("data", list);
-    }
+
 }
