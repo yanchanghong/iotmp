@@ -10,7 +10,7 @@ import io.iotmp.modules.manage.vo.request.UpdateRegionReq;
 /**
  * @ClassName
  * @Description
- * @Author changhong.yan
+ * @Author canolue
  * @Date 2019/12/18 16:48
  * @Version 1.0
  **/

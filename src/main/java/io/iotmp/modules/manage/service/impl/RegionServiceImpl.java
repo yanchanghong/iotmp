@@ -65,13 +65,6 @@ public class RegionServiceImpl extends ServiceImpl<SystemRegionDao, RegionEntity
     }
 
 
-    private void checkSelfIdAndType(Integer selfId, Integer RegionType) {
-        RegionEntity Region = baseMapper.selectOne((new QueryWrapper<RegionEntity>().eq("self_id", selfId).eq("Region_type_id", RegionType)));
-        if (Region != null) {
-            throw new RRException("标识ID有重复");
-        }
-    }
-
     @Override
     public void update(UpdateRegionReq updateRegionReq) {
         log.info("updateRegionreq:{}", updateRegionReq);

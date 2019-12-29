@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * 字典管理
+ * 图列管理
  *
  * @author Yanchanghong
  */

@@ -8,14 +8,10 @@ import io.iotmp.common.utils.PageUtils;
 import io.iotmp.common.utils.Query;
 import io.iotmp.modules.manage.dao.SysCategoryDao;
 import io.iotmp.modules.manage.entity.CategoryEntity;
-import io.iotmp.modules.manage.entity.DevPicEntity;
 import io.iotmp.modules.manage.service.CategoryService;
 import io.iotmp.modules.manage.vo.request.AddCategoryReq;
 import io.iotmp.modules.manage.vo.request.SearchCategoryReq;
 import io.iotmp.modules.manage.vo.request.UpdateCategoryReq;
-import io.iotmp.modules.sys.dao.SysLogDao;
-import io.iotmp.modules.sys.entity.SysLogEntity;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

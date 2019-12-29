@@ -1,7 +1,6 @@
 package io.iotmp.modules.manage.controller;
 
 import io.iotmp.common.utils.R;
-import io.iotmp.modules.manage.service.FuncService;
 import io.iotmp.modules.manage.service.ProjectService;
 import io.iotmp.modules.manage.vo.request.*;
 import io.swagger.annotations.Api;

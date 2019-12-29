@@ -18,4 +18,6 @@ public class SearchPageReq {
     private Long page;
     @ApiParam(value = "每页数量", required = true, defaultValue = "10")
     private Long pageSize;
+    @ApiParam(value = "项目ID", required = true)
+    private Integer orgId;
 }

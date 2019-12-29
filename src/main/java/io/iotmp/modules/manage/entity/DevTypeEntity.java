@@ -7,7 +7,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @ClassName
@@ -17,21 +16,13 @@ import java.util.List;
  * @Version 1.0
  **/
 @Data
-@TableName("sys_region")
-public class RegionEntity implements Serializable {
+@TableName("sys_dev_type")
+public class DevTypeEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId
     private Integer id;
     private Integer orgId;// 项目ID
-    private Integer parentId;// 父ID
     private String name;// 名称
-    private String url; // 背景图
-    private String longitude;// 经度
-    private String latitude;// 纬度
-    private Integer zoom;// 初始倍数
-    private Integer type;// 类型 1:图片，2：地图
     private Date createTime;
     private Date updateTime;
-    @TableField(exist = false)
-    private List<RegionEntity> children; //节点集合
 }

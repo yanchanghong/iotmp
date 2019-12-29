@@ -1,18 +1,14 @@
 package io.iotmp.modules.manage.controller;
 
 import io.iotmp.common.utils.R;
-import io.iotmp.modules.manage.service.CategoryService;
 import io.iotmp.modules.manage.service.FuncService;
 import io.iotmp.modules.manage.vo.request.*;
-import io.iotmp.modules.manage.vo.response.PointTypeResp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @ClassName

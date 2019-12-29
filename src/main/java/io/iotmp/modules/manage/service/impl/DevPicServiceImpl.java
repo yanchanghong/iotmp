@@ -3,24 +3,17 @@ package io.iotmp.modules.manage.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import io.iotmp.common.exception.RRException;
 import io.iotmp.common.utils.PageUtils;
 import io.iotmp.common.utils.Query;
-import io.iotmp.modules.manage.dao.SysCategoryDao;
 import io.iotmp.modules.manage.dao.SysDevPicDao;
-import io.iotmp.modules.manage.entity.CategoryEntity;
 import io.iotmp.modules.manage.entity.DevPicEntity;
-import io.iotmp.modules.manage.service.CategoryService;
 import io.iotmp.modules.manage.service.DevPicService;
 import io.iotmp.modules.manage.vo.request.*;
-import io.iotmp.modules.sys.entity.SysWorkOrderEntity;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -14,6 +14,8 @@ import lombok.Data;
 @Data
 @ApiModel(description = "修改方法请求")
 public class UpdateFuncReq {
+    @ApiModelProperty(value = "机构ID", required = true)
+    private Integer orgId;
     @ApiModelProperty(value = "类别：1设备，2点位")
     private Integer type;
     @ApiModelProperty(value = "名称", required = true)
