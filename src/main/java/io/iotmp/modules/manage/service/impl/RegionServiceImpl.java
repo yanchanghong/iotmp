@@ -26,7 +26,9 @@ import java.util.List;
 public class RegionServiceImpl extends ServiceImpl<SystemRegionDao, RegionEntity> implements RegionService {
     @Override
     public PageUtils queryList(SearchRegionReq searchRegionReq) {
-
+        if (searchRegionReq.getParentId() == null) {
+            searchRegionReq.setParentId(0);
+        }
         if (searchRegionReq.getPage() == null) {
             searchRegionReq.setPage(1L);
         }
@@ -58,7 +60,11 @@ public class RegionServiceImpl extends ServiceImpl<SystemRegionDao, RegionEntity
         Region.setZoom(addRegionReq.getZoom());
         Region.setType(addRegionReq.getType());
         Region.setOrgId(addRegionReq.getOrgId());
-        Region.setParentId(addRegionReq.getParentId());
+        if (addRegionReq.getParentId() == null) {
+            Region.setParentId(0);
+        } else {
+            Region.setParentId(addRegionReq.getParentId());
+        }
         Region.setUrl(addRegionReq.getUrl());
         Region.setCreateTime(new Date());
         baseMapper.insert(Region);
@@ -68,12 +74,11 @@ public class RegionServiceImpl extends ServiceImpl<SystemRegionDao, RegionEntity
     @Override
     public void update(UpdateRegionReq updateRegionReq) {
         log.info("updateRegionreq:{}", updateRegionReq);
-        RegionEntity RegionEntity = baseMapper.selectById(updateRegionReq.getId());
-        if (RegionEntity != null) {
-
-
-            RegionEntity.setName(updateRegionReq.getName());
-            baseMapper.updateById(RegionEntity);
+        RegionEntity regionEntity = baseMapper.selectById(updateRegionReq.getId());
+        if (regionEntity != null) {
+            regionEntity.setName(updateRegionReq.getName());
+            regionEntity.setUpdateTime(new Date());
+            baseMapper.updateById(regionEntity);
         }
     }
 
