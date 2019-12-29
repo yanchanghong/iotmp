@@ -34,4 +34,6 @@ public class RegionEntity implements Serializable {
     private Date updateTime;
     @TableField(exist = false)
     private List<RegionEntity> children; //节点集合
+    @TableField(exist = false)
+    private Boolean hasChildren;
 }

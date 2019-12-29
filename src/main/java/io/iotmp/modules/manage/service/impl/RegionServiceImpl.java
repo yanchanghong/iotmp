@@ -13,6 +13,7 @@ import io.iotmp.modules.manage.vo.request.AddRegionReq;
 import io.iotmp.modules.manage.vo.request.SearchRegionReq;
 import io.iotmp.modules.manage.vo.request.UpdateRegionReq;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Array;
@@ -44,9 +45,14 @@ public class RegionServiceImpl extends ServiceImpl<SystemRegionDao, RegionEntity
         );
 
         List<RegionEntity> sysRegionList = page.getRecords();
-        for (RegionEntity Region : sysRegionList) {
-            List<RegionEntity> devRegionList = baseMapper.selectList(new QueryWrapper<RegionEntity>().eq("parent_id", Region.getId()).orderByDesc("create_time"));
-            Region.setChildren(devRegionList);
+        for (RegionEntity region : sysRegionList) {
+            List<RegionEntity> devRegionList = baseMapper.selectList(new QueryWrapper<RegionEntity>().eq("parent_id", region.getId()).orderByDesc("create_time"));
+            region.setChildren(devRegionList);
+            if (CollectionUtils.isEmpty(devRegionList)) {
+                region.setHasChildren(false);
+            } else {
+                region.setHasChildren(true);
+            }
         }
         return new PageUtils(page);
     }
