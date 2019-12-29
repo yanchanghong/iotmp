@@ -1,6 +1,7 @@
 package io.iotmp.modules.manage.vo.request;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
@@ -18,4 +19,8 @@ public class SearchRegionReq {
     private Long page;
     @ApiParam(value = "每页数量", required = true, defaultValue = "10")
     private Long pageSize;
+    @ApiParam(value = "项目ID", required = true)
+    private Integer orgId;
+    @ApiParam(value = "父类ID", required = true)
+    private Integer parentId;
 }

@@ -38,7 +38,7 @@ public class RegionServiceImpl extends ServiceImpl<SystemRegionDao, RegionEntity
         params.put("pageSize", searchRegionReq.getPageSize() + "");
         IPage<RegionEntity> page = this.page(
                 new Query<RegionEntity>().getPage(params),
-                new QueryWrapper<RegionEntity>().isNull("parent_id").orderByDesc("create_time")
+                new QueryWrapper<RegionEntity>().eq("parent_id", searchRegionReq.getParentId()).eq("org_id", searchRegionReq.getOrgId()).orderByDesc("create_time")
         );
 
         List<RegionEntity> sysRegionList = page.getRecords();
