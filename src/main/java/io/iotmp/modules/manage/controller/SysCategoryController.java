@@ -53,13 +53,13 @@ public class SysCategoryController {
     @ApiOperation(value = "获取字典", notes = "通过ID获取字典")
     @ResponseBody
     @GetMapping("/{id}")
-    public R getById(@PathVariable("id") @ApiParam(name = "id", value = "id") Long id) {
+    public R getById(@PathVariable("id") @ApiParam(name = "id", value = "id",required = true) Long id) {
         return R.ok().put("data", categoryService.findByID(id));
     }
     @ApiOperation(value = "根据类型获取列表", notes = "通过type获取列表")
     @ResponseBody
     @GetMapping("/list/{categoryTypeId}")
-    public R getListByType(@PathVariable("categoryTypeId") @ApiParam(name = "categoryTypeId", value = "categoryTypeId") Integer categoryTypeId) {
+    public R getListByType(@PathVariable("categoryTypeId") @ApiParam(name = "categoryTypeId", value = "设备类型ID",required = true) Integer categoryTypeId) {
         return R.ok().put("data", categoryService.queryListByType(categoryTypeId));
     }
     @ApiOperation(value = "删除字典", notes = "通过ID删除字典")

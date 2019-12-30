@@ -45,7 +45,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .title("物联网监控平台")
                 .description("物联网监控")
                 .termsOfServiceUrl("")
-                .version("3.0.0")
+                .version("1.0.0")
                 .build();
     }
 
