@@ -23,7 +23,7 @@ import java.util.List;
  * @Version 1.0
  **/
 @RestController
-@Api(tags = "设备分组管理")
+@Api(tags = "设备分组(子设备)管理")
 @RequestMapping(value = "/api/v1/config/project/devGroup")
 public class SysDevGroupController {
 
