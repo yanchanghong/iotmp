@@ -23,6 +23,7 @@ public class DevGroupEntity implements Serializable {
     @TableId
     private Integer id;
     private Integer sysCategoryId;
+    private String url;
     private String type;
     private Integer sysDevTypeId;
     private Date createTime;

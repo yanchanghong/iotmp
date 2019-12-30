@@ -49,6 +49,7 @@ public class DevGroupServiceImpl extends ServiceImpl<SysDevGroupDao, DevGroupEnt
         devGroupEntity.setType(addDevGroupReq.getType());
         devGroupEntity.setCreateTime(new Date());
         devGroupEntity.setSysDevTypeId(addDevGroupReq.getDevTypeId());
+        devGroupEntity.setUrl(addDevGroupReq.getUrl());
         baseMapper.insert(devGroupEntity);
     }
 
@@ -60,6 +61,7 @@ public class DevGroupServiceImpl extends ServiceImpl<SysDevGroupDao, DevGroupEnt
             devGroupEntity.setSysCategoryId(updateDevGroupReq.getSysCategoryId());
             devGroupEntity.setType(updateDevGroupReq.getType());
             devGroupEntity.setUpdateTime(new Date());
+            devGroupEntity.setUrl(updateDevGroupReq.getUrl());
             baseMapper.updateById(devGroupEntity);
         }
     }

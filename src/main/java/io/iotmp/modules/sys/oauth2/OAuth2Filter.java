@@ -46,7 +46,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         String method = ((HttpServletRequest) request).getRequestURI();
-        if (method.contains("v1/sys/login") || method.contains("syslog/export") || method.contains("config")) {
+        if (method.contains("v1/sys/login") || method.contains("syslog/export") || method.contains("config") || method.contains("static")) {
             return true;
         }
         if (((HttpServletRequest) request).getMethod().equals(RequestMethod.OPTIONS.name())) {

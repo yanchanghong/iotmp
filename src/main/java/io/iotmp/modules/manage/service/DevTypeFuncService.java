@@ -3,7 +3,7 @@ package io.iotmp.modules.manage.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.iotmp.common.utils.PageUtils;
 import io.iotmp.modules.manage.entity.DevGroupEntity;
-import io.iotmp.modules.manage.entity.DevTypeEntity;
+import io.iotmp.modules.manage.entity.DevTypeFuncEntity;
 import io.iotmp.modules.manage.vo.request.*;
 
 /**
@@ -13,15 +13,15 @@ import io.iotmp.modules.manage.vo.request.*;
  * @Date 2019/12/18 16:48
  * @Version 1.0
  **/
-public interface DevGroupService extends IService<DevGroupEntity> {
+public interface DevTypeFuncService extends IService<DevTypeFuncEntity> {
 
-    PageUtils queryList(SearchDevGroupReq searchDevGroupReq);
+    PageUtils queryList(SearchDevTypeFuncReq searchDevTypeFuncReq);
 
-    void add(AddDevGroupReq adGroupReq);
+    void add(AddDevTypeFuncReq addDevTypeFuncReq);
 
-    void update(UpdateDevGroupReq updateDevGroupReq);
+    void update(UpdateDevTypeFuncReq updateDevTypeFuncReq);
 
-    DevGroupEntity findByID(Long id);
+    DevTypeFuncEntity findByID(Long id);
 
     void deleteById(Long id);
 }
