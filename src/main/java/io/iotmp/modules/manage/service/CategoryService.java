@@ -7,6 +7,7 @@ import io.iotmp.modules.manage.vo.request.AddCategoryReq;
 import io.iotmp.modules.manage.vo.request.SearchCategoryReq;
 import io.iotmp.modules.manage.vo.request.UpdateCategoryReq;
 import io.iotmp.modules.sys.entity.SysLogEntity;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ import java.util.List;
 public interface CategoryService extends IService<CategoryEntity> {
 
     PageUtils queryList(SearchCategoryReq searchCategoryReq);
+
+    List<CategoryEntity> queryListByType(Integer categoryTypeId);
 
     void add(AddCategoryReq addCategoryReq);
 

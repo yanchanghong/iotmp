@@ -59,6 +59,11 @@ public class CategoryServiceImpl extends ServiceImpl<SysCategoryDao, CategoryEnt
     }
 
     @Override
+    public List<CategoryEntity> queryListByType(Integer categoryTypeId) {
+        return baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("category_type_id", categoryTypeId).orderByDesc("create_time"));
+    }
+
+    @Override
     public void add(AddCategoryReq addCategoryReq) {
         CategoryEntity category = new CategoryEntity();
         if (addCategoryReq.getCategoryTypeId().intValue() == 1) {

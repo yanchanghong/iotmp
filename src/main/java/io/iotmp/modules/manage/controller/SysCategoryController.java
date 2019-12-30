@@ -56,7 +56,12 @@ public class SysCategoryController {
     public R getById(@PathVariable("id") @ApiParam(name = "id", value = "id") Long id) {
         return R.ok().put("data", categoryService.findByID(id));
     }
-
+    @ApiOperation(value = "根据类型获取列表", notes = "通过type获取列表")
+    @ResponseBody
+    @GetMapping("/list/{categoryTypeId}")
+    public R getListByType(@PathVariable("categoryTypeId") @ApiParam(name = "categoryTypeId", value = "categoryTypeId") Integer categoryTypeId) {
+        return R.ok().put("data", categoryService.queryListByType(categoryTypeId));
+    }
     @ApiOperation(value = "删除字典", notes = "通过ID删除字典")
     @ResponseBody
     @PostMapping("/{id}")
