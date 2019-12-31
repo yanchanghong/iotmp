@@ -14,16 +14,45 @@ import java.util.Date;
  * @Date 2019/12/27 16:31
  * @Version 1.0
  **/
+
 @Data
 @TableName("sys_points")
 public class PointsEntity implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    /**
+     *
+     */
     @TableId
     private Integer id;
-    private Integer orgId;// 项目ID
-    private String name;// 名称
-    private String code;// 标识
-    private String value; // 当前值
+    /**
+     * 点位编码
+     */
+    private String deviceCode;
+    /**
+     * 点位值
+     */
+    private String value;
+    /**
+     * 添加时间
+     */
     private Date createTime;
+    /**
+     * 机构ID
+     */
+    private Integer orgId;
+    /**
+     * 更新时间
+     */
     private Date updateTime;
+    /**
+     * 名称
+     */
+    private String name;
+    /**
+     * 标识
+     */
+    private String code;
+
 }
+
