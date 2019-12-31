@@ -14,6 +14,7 @@ import org.hibernate.validator.internal.util.privilegedactions.GetResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,14 +76,15 @@ public class SysDevGroupController {
     @ResponseBody
     @GetMapping("/group/pic")
     public R listGroupPics() {
+        String url = "http://127.0.0.1:8090/";
         List<GroupPicResp> list = new ArrayList<GroupPicResp>();
         GroupPicResp place1 = new GroupPicResp();
         place1.setName("图标1");
-        place1.setUrl("static/pic//1.png");
+        place1.setUrl(url + "static/pic//1.png");
         list.add(place1);
         GroupPicResp place2 = new GroupPicResp();
         place2.setName("图标2");
-        place2.setUrl("static/pic/2.png");
+        place2.setUrl(url + "static/pic/2.png");
         list.add(place2);
         return R.ok().put("data", list);
     }

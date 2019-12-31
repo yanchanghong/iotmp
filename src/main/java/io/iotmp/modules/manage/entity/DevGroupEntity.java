@@ -1,5 +1,6 @@
 package io.iotmp.modules.manage.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.models.auth.In;
@@ -7,6 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName
@@ -28,4 +30,8 @@ public class DevGroupEntity implements Serializable {
     private Integer sysDevTypeId;
     private Date createTime;
     private Date updateTime;
+    @TableField(exist = false)
+    private String categoryName;
+    @TableField(exist = false)
+    private List<CategoryEntity> children;
 }

@@ -5,6 +5,9 @@ import io.iotmp.common.utils.PageUtils;
 import io.iotmp.modules.manage.entity.DevGroupEntity;
 import io.iotmp.modules.manage.entity.DevTypeFuncEntity;
 import io.iotmp.modules.manage.vo.request.*;
+import io.iotmp.modules.manage.vo.response.DevGroupResp;
+
+import java.util.List;
 
 /**
  * @ClassName
@@ -24,4 +27,6 @@ public interface DevTypeFuncService extends IService<DevTypeFuncEntity> {
     DevTypeFuncEntity findByID(Long id);
 
     void deleteById(Long id);
+
+    PageUtils getCategorysByDevTypeId(SearchDevGroupReq searchDevGroupReq);
 }

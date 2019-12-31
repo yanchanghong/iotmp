@@ -68,20 +68,11 @@ public class SysDevTypeFuncController {
         return R.ok();
     }
 
-    @ApiOperation(value = "获取图标列表", notes = "返回列表")
+    @ApiOperation(value = "获取该设备类别下子设备类别", notes = "获取子设备类型下得字典")
     @ResponseBody
-    @GetMapping("/group/pic")
-    public R listGroupPics() {
-        List<GroupPicResp> list = new ArrayList<GroupPicResp>();
-        GroupPicResp place1 = new GroupPicResp();
-        place1.setName("图标1");
-        place1.setUrl("hello");
-        list.add(place1);
-        GroupPicResp place2 = new GroupPicResp();
-        place2.setName("图标2");
-        place2.setUrl("test");
-        list.add(place2);
-        return R.ok().put("data", list);
+    @GetMapping("/categorys")
+    public R getCategorysByDevTypeId(SearchDevGroupReq searchDevGroupReq) {
+        return R.ok().put("data", devTypeFuncService.getCategorysByDevTypeId(searchDevGroupReq));
     }
 }
 

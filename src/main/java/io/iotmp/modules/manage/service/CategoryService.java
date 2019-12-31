@@ -31,4 +31,11 @@ public interface CategoryService extends IService<CategoryEntity> {
     CategoryEntity findByID(Long id);
 
     void deleteById(Long id);
+
+    /**
+     * @Description 通过ID查询该设备下得子字典
+     * @param id
+     * @return
+     */
+    List<CategoryEntity> queryListById(Long id);
 }

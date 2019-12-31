@@ -15,10 +15,7 @@ import io.iotmp.modules.manage.vo.request.UpdateCategoryReq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName
@@ -150,5 +147,17 @@ public class CategoryServiceImpl extends ServiceImpl<SysCategoryDao, CategoryEnt
                 }
             }
         }
+    }
+
+    @Override
+    public List<CategoryEntity> queryListById(Long id) {
+        CategoryEntity categoryEntity = baseMapper.selectById(id);
+        List<CategoryEntity> pointCategoryList = new ArrayList<>();
+        if (categoryEntity != null) {
+            if (categoryEntity.getCategoryTypeId().intValue() == 2) {
+                pointCategoryList = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_id", categoryEntity.getId()).orderByDesc("create_time"));
+            }
+        }
+        return pointCategoryList;
     }
 }

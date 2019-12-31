@@ -7,21 +7,33 @@ import io.iotmp.common.utils.PageUtils;
 import io.iotmp.common.utils.Query;
 import io.iotmp.modules.manage.dao.SysDevGroupDao;
 import io.iotmp.modules.manage.dao.SysDevTypeFuncDao;
+import io.iotmp.modules.manage.entity.CategoryEntity;
 import io.iotmp.modules.manage.entity.DevGroupEntity;
 import io.iotmp.modules.manage.entity.DevTypeFuncEntity;
+import io.iotmp.modules.manage.service.CategoryService;
 import io.iotmp.modules.manage.service.DevGroupService;
 import io.iotmp.modules.manage.service.DevTypeFuncService;
 import io.iotmp.modules.manage.vo.request.*;
+import io.iotmp.modules.manage.vo.response.DevGroupResp;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service("devTypeFuncService")
 @Slf4j
 public class DevTypeFuncServiceImpl extends ServiceImpl<SysDevTypeFuncDao, DevTypeFuncEntity> implements DevTypeFuncService {
+
+    @Autowired
+    private DevGroupService deveGroupService;
+
+    @Autowired
+    private CategoryService categoryService;
+
     @Override
     public PageUtils queryList(SearchDevTypeFuncReq searchDevTypeFuncReq) {
 
@@ -77,4 +89,17 @@ public class DevTypeFuncServiceImpl extends ServiceImpl<SysDevTypeFuncDao, DevTy
         baseMapper.deleteById(id);
     }
 
+    @Override
+    public PageUtils getCategorysByDevTypeId(SearchDevGroupReq searchDevGroupReq) {
+        PageUtils page = deveGroupService.queryList(searchDevGroupReq);
+        for (DevGroupEntity groupEntity : (List<DevGroupEntity>) page.getList()) {
+            CategoryEntity categoryEntity = categoryService.findByID(Long.valueOf(groupEntity.getId() + ""));
+            if (categoryEntity != null) {
+                groupEntity.setCategoryName(categoryEntity.getName());
+            }
+            List<CategoryEntity> categories = categoryService.queryListById(Long.valueOf(groupEntity.getSysCategoryId() + ""));
+            groupEntity.setChildren(categories);
+        }
+        return page;
+    }
 }

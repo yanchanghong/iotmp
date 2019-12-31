@@ -22,6 +22,6 @@ public class SearchDevTypeFuncReq {
     private Integer devTypeId;
     @ApiParam(value = "1设备类型，2子设备类型", required = true)
     private Integer type;
-    @ApiParam(value = "字典ID", required = true)
+    @ApiParam(value = "字典ID")
     private Integer categoryId;
 }
