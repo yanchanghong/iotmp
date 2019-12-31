@@ -19,6 +19,6 @@ public class WebConfigurer extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/pic/**").addResourceLocations("file:///"+"D:/studyworkplace/iotmp/target/classes/static/pic/");
+        registry.addResourceHandler("/static/pic/**").addResourceLocations("file:///"+System.getProperty("user.dir") +"\\target\\classes\\static\\pic\\");
     }
 }

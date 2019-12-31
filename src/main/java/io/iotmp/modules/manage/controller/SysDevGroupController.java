@@ -86,6 +86,7 @@ public class SysDevGroupController {
         place2.setName("图标2");
         place2.setUrl(url + "static/pic/2.png");
         list.add(place2);
+        log.info("project:{}",System.getProperty("user.dir"));
         return R.ok().put("data", list);
     }
 }
