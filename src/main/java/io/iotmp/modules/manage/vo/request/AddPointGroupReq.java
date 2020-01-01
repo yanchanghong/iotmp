@@ -18,6 +18,6 @@ public class AddPointGroupReq {
     private String name;
     @ApiModelProperty(value = "样式类型")
     private Integer styleType;
-    @ApiModelProperty(value = "设备类别ID", required = true)
-    private Integer devTypeId;
+    @ApiModelProperty(value = "子设备类别ID", required = true)
+    private Integer subDevTypeId;
 }

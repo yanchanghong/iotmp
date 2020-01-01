@@ -5,6 +5,7 @@ import io.iotmp.common.utils.PageUtils;
 import io.iotmp.modules.manage.entity.PointsEntity;
 import io.iotmp.modules.manage.vo.request.AddPointsReq;
 import io.iotmp.modules.manage.vo.request.SearchPageReq;
+import io.iotmp.modules.manage.vo.request.SearchPointReq;
 import io.iotmp.modules.manage.vo.request.UpdatePointsReq;
 
 /**
@@ -22,7 +23,7 @@ public interface PointsService extends IService<PointsEntity> {
 
     void deleteById(Integer id);
 
-    PageUtils queryPage(SearchPageReq searchPageReq);
+    PageUtils queryPage(SearchPointReq searchPointReq);
 
     PointsEntity getById(Integer id);
 }

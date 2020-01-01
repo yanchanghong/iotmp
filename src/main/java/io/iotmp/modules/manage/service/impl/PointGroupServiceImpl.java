@@ -62,7 +62,7 @@ public class PointGroupServiceImpl extends ServiceImpl<SysPointGroupDao, PointGr
         pointGroupEntity.setName(addPointGroupReq.getName());
         pointGroupEntity.setStyleType(addPointGroupReq.getStyleType());
         pointGroupEntity.setCreateTime(new Date());
-        pointGroupEntity.setDevTypeId(addPointGroupReq.getDevTypeId());
+        pointGroupEntity.setDevTypeId(addPointGroupReq.getSubDevTypeId());
         baseMapper.insert(pointGroupEntity);
     }
 

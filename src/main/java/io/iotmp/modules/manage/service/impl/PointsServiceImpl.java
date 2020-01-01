@@ -10,8 +10,10 @@ import io.iotmp.modules.manage.entity.PointsEntity;
 import io.iotmp.modules.manage.service.PointsService;
 import io.iotmp.modules.manage.vo.request.AddPointsReq;
 import io.iotmp.modules.manage.vo.request.SearchPageReq;
+import io.iotmp.modules.manage.vo.request.SearchPointReq;
 import io.iotmp.modules.manage.vo.request.UpdatePointsReq;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -58,7 +60,7 @@ public class PointsServiceImpl extends ServiceImpl<SysPointsDao, PointsEntity> i
     }
 
     @Override
-    public PageUtils queryPage(SearchPageReq searchPageReq) {
+    public PageUtils queryPage(SearchPointReq searchPageReq) {
         if (searchPageReq.getPage() == null) {
             searchPageReq.setPage(1L);
         }
@@ -70,7 +72,9 @@ public class PointsServiceImpl extends ServiceImpl<SysPointsDao, PointsEntity> i
         params.put("pageSize", searchPageReq.getPageSize() + "");
         IPage<PointsEntity> page = this.page(
                 new Query<PointsEntity>().getPage(params),
-                new QueryWrapper<PointsEntity>().eq(searchPageReq.getOrgId() != null, "org_id", searchPageReq.getOrgId()).orderByDesc("create_time")
+                new QueryWrapper<PointsEntity>().eq(searchPageReq.getOrgId() != null, "org_id", searchPageReq.getOrgId())
+                        .and(StringUtils.isNotEmpty(searchPageReq.getKeyWord()), i -> i.eq(StringUtils.isNotEmpty(searchPageReq.getKeyWord()), "id", searchPageReq.getKeyWord()).or().like(StringUtils.isNotEmpty(searchPageReq.getKeyWord()), "name", searchPageReq.getKeyWord()))
+                        .orderByDesc("create_time")
         );
         return new PageUtils(page);
     }

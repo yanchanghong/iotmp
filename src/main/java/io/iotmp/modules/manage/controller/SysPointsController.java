@@ -4,6 +4,7 @@ import io.iotmp.common.utils.R;
 import io.iotmp.modules.manage.service.PointsService;
 import io.iotmp.modules.manage.vo.request.AddPointsReq;
 import io.iotmp.modules.manage.vo.request.SearchPageReq;
+import io.iotmp.modules.manage.vo.request.SearchPointReq;
 import io.iotmp.modules.manage.vo.request.UpdatePointsReq;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,8 +30,8 @@ public class SysPointsController {
     @ApiOperation(value = "获取点位列表", notes = "获取点位列表")
     @ResponseBody
     @GetMapping("/")
-    public R list(SearchPageReq searchPageReq) {
-        return R.ok().put("data", PointsService.queryPage(searchPageReq));
+    public R list(SearchPointReq searchPointReq) {
+        return R.ok().put("data", PointsService.queryPage(searchPointReq));
     }
 
     @ApiOperation(value = "添加点位", notes = "添加点位")

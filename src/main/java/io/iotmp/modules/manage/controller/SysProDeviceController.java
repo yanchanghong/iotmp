@@ -63,4 +63,12 @@ public class SysProDeviceController {
         deviceService.deleteById(id);
         return R.ok();
     }
+
+    @ApiOperation(value = "添加子设备", notes = "添加子设备")
+    @ResponseBody
+    @PostMapping("/sub/add")
+    public R addSubDev(@RequestBody AddDeviceReq addDeviceReq) {
+        deviceService.add(addDeviceReq);
+        return R.ok();
+    }
 }
