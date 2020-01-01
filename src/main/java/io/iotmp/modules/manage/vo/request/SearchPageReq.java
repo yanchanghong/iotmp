@@ -20,4 +20,7 @@ public class SearchPageReq {
     private Long pageSize;
     @ApiParam(value = "项目ID", required = true)
     private Integer orgId;
+    @ApiParam(value = "方法类型，1设备，2点位")
+    private Integer type;
+
 }

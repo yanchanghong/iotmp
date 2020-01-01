@@ -45,9 +45,11 @@ public class DevGroupServiceImpl extends ServiceImpl<SysDevGroupDao, DevGroupEnt
                 new QueryWrapper<DevGroupEntity>().eq("sys_dev_type_id", searchDevGroupReq.getDevTypeId()).orderByDesc("create_time")
         );
         for (DevGroupEntity devGroupEntity : page.getRecords()) {
-            CategoryEntity categoryEntity = categoryService.findByID(Long.valueOf(devGroupEntity.getSysCategoryId() + ""));
-            if (categoryEntity != null) {
-                devGroupEntity.setCategoryName(categoryEntity.getName());
+            if (devGroupEntity.getSysCategoryId() != null) {
+                CategoryEntity categoryEntity = categoryService.findByID(Long.valueOf(devGroupEntity.getSysCategoryId() + ""));
+                if (categoryEntity != null) {
+                    devGroupEntity.setCategoryName(categoryEntity.getName());
+                }
             }
         }
         return new PageUtils(page);

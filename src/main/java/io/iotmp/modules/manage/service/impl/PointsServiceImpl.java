@@ -70,7 +70,7 @@ public class PointsServiceImpl extends ServiceImpl<SysPointsDao, PointsEntity> i
         params.put("pageSize", searchPageReq.getPageSize() + "");
         IPage<PointsEntity> page = this.page(
                 new Query<PointsEntity>().getPage(params),
-                new QueryWrapper<PointsEntity>().orderByDesc("create_time")
+                new QueryWrapper<PointsEntity>().eq(searchPageReq.getOrgId() != null, "org_id", searchPageReq.getOrgId()).orderByDesc("create_time")
         );
         return new PageUtils(page);
     }

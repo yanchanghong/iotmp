@@ -69,7 +69,7 @@ public class FuncServiceImpl extends ServiceImpl<SysFuncDao, FuncEntity> impleme
         params.put("pageSize", searchPageReq.getPageSize() + "");
         IPage<FuncEntity> page = this.page(
                 new Query<FuncEntity>().getPage(params),
-                new QueryWrapper<FuncEntity>().orderByDesc("create_time")
+                new QueryWrapper<FuncEntity>().eq(searchPageReq.getType() != null, "type", searchPageReq.getType()).orderByDesc("create_time")
         );
         return new PageUtils(page);
     }
