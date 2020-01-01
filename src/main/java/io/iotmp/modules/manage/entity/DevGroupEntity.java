@@ -34,4 +34,6 @@ public class DevGroupEntity implements Serializable {
     private String categoryName;
     @TableField(exist = false)
     private List<CategoryEntity> children;
+    @TableField(exist = false)
+    private List<PointGroupEntity> childrenPointGroup;
 }

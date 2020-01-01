@@ -17,19 +17,14 @@ import java.util.List;
  * @Version 1.0
  **/
 @Data
-@TableName("sys_point_group")
-public class PointGroupEntity implements Serializable {
+@TableName("sys_point_group_rel")
+public class PointGroupRelEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId
     private Integer id;
-    private String name;
-    private Integer styleType;
-    private Integer devTypeId;
+    private Integer categoryId;
+    private Integer pointGroupId;
     private Date createTime;
     private Date updateTime;
-    @TableField(exist = false)
-    private String categoryName;
-    @TableField(exist = false)
-    private List<CategoryEntity> children;
 }
