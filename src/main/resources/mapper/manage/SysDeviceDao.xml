@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.iotmp.modules.manage.dao.SysDeviceDao">
+
+
+    <insert id="insertSubDevice" parameterType="io.iotmp.modules.manage.entity.SubDeviceEntity">
+        insert into sys_sub_device(name, dev_type_id,device_id,org_id, create_time)
+               values(#{name}, #{devTypeId}, #{deviceId},#{orgId},#{createTime})
+    </insert>
+
+    <insert id="insertSubDevicePointRel" parameterType="io.iotmp.modules.manage.entity.SubDevicePointRelEntity">
+        insert into sys_sub_device(sub_device_id,point_id,create_time,category_id)
+               values(#{subDeviceId}, #{pointId},#{createTime}, #{categoryId})
+    </insert>
+
+    <select id="queryListByDeviceId"
+            resultType="io.iotmp.modules.manage.entity.SubDeviceEntity">
+		SELECT * from sys_sub_device where device_id = #{deviceId} and dev_type_id = #{deviceTypeId}
+     ORDER BY create_time DESC
+	</select>
+
+    <select id="getSubDevicePointRel"
+            resultType="io.iotmp.modules.manage.entity.SubDevicePointRelEntity">
+		SELECT rel.id id, p.name pointName from sys_dev_point_rel rel left join sys_points p on rel.point_id = p.id where rel.sub_device_id = #{subDeviceId}
+		 and rel.point_id = #{pointId} and rel.category_id = #{categoryId}
+       limit 1
+	</select>
+
+
+    <select id="getSubDevicePointRelList"
+            resultType="io.iotmp.modules.manage.entity.SubDevicePointRelEntity">
+		SELECT * from sys_dev_point_rel rel  where rel.sub_device_id = #{subDeviceId}
+	</select>
+</mapper>

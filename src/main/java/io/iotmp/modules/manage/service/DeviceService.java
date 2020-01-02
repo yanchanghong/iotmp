@@ -3,9 +3,8 @@ package io.iotmp.modules.manage.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.iotmp.common.utils.PageUtils;
 import io.iotmp.modules.manage.entity.DeviceEntity;
-import io.iotmp.modules.manage.vo.request.AddDeviceReq;
-import io.iotmp.modules.manage.vo.request.SearchPageReq;
-import io.iotmp.modules.manage.vo.request.UpdateDeviceReq;
+import io.iotmp.modules.manage.entity.SubDevicePointRelEntity;
+import io.iotmp.modules.manage.vo.request.*;
 import io.swagger.models.auth.In;
 
 /**
@@ -26,4 +25,11 @@ public interface DeviceService extends IService<DeviceEntity> {
     DeviceEntity findByID(Integer id);
 
     void deleteById(Integer id);
+
+    void addSubDev(AddSubDeviceReq addSubDeviceReq);
+
+    void bindPoint(AddSubDevicePointRelReq addSubDevicePointRelReq);
+
+    PageUtils querySubDeviceList(SearchSubDevicePageReq searchSubDevicePageReq);
+
 }

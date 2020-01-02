@@ -6,22 +6,34 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.iotmp.common.utils.PageUtils;
 import io.iotmp.common.utils.Query;
 import io.iotmp.modules.manage.dao.SysDeviceDao;
-import io.iotmp.modules.manage.entity.DeviceEntity;
+import io.iotmp.modules.manage.entity.*;
+import io.iotmp.modules.manage.service.CategoryService;
+import io.iotmp.modules.manage.service.DevGroupService;
 import io.iotmp.modules.manage.service.DeviceService;
 
-import io.iotmp.modules.manage.vo.request.AddDeviceReq;
-import io.iotmp.modules.manage.vo.request.SearchPageReq;
-import io.iotmp.modules.manage.vo.request.UpdateDeviceReq;
+import io.iotmp.modules.manage.vo.request.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service("DeviceService")
 @Slf4j
 public class DeviceServiceImpl extends ServiceImpl<SysDeviceDao, DeviceEntity> implements DeviceService {
+
+    @Autowired
+    private SysDeviceDao sysDeviceDao;
+
+    @Autowired
+    private DevGroupService devGroupService;
+
+    @Autowired
+    private CategoryService categoryService;
+
     @Override
     public PageUtils queryList(SearchPageReq searchDeviceReq) {
 
@@ -74,4 +86,52 @@ public class DeviceServiceImpl extends ServiceImpl<SysDeviceDao, DeviceEntity> i
         baseMapper.deleteById(id);
     }
 
+    @Override
+    public void addSubDev(AddSubDeviceReq addSubDeviceReq) {
+        SubDeviceEntity subDeviceEntity = new SubDeviceEntity();
+        subDeviceEntity.setName(addSubDeviceReq.getName());
+        subDeviceEntity.setDevTypeId(addSubDeviceReq.getDevTypeId());
+        subDeviceEntity.setDeviceId(addSubDeviceReq.getDeviceId());
+        subDeviceEntity.setOrgId(addSubDeviceReq.getOrgId());
+        subDeviceEntity.setCreateTime(new Date());
+        sysDeviceDao.insertSubDevice(subDeviceEntity);
+    }
+
+    @Override
+    public void bindPoint(AddSubDevicePointRelReq addSubDevicePointRelReq) {
+        SubDevicePointRelEntity subDevicePointRelEntity = new SubDevicePointRelEntity();
+        subDevicePointRelEntity.setSubDeviceId(addSubDevicePointRelReq.getSubDeviceId());
+        subDevicePointRelEntity.setPointId(addSubDevicePointRelReq.getPointId());
+        subDevicePointRelEntity.setCreateTime(new Date());
+        subDevicePointRelEntity.setCategoryId(addSubDevicePointRelReq.getCategoryId());
+        sysDeviceDao.insertSubDevicePointRel(subDevicePointRelEntity);
+    }
+
+    @Override
+    public PageUtils querySubDeviceList(SearchSubDevicePageReq searchSubDevicePageReq) {
+        SearchDevGroupReq searchDevGroupReq = new SearchDevGroupReq();
+        searchDevGroupReq.setPageSize(searchSubDevicePageReq.getPageSize());
+        searchDevGroupReq.setPage(searchSubDevicePageReq.getPage());
+        searchDevGroupReq.setDevTypeId(searchSubDevicePageReq.getDeviceTypeId());
+        PageUtils page = devGroupService.queryList(searchDevGroupReq);
+        for (DevGroupEntity entity : (List<DevGroupEntity>) page.getList()) {
+            List<SubDeviceEntity> subDeviceEntityList = sysDeviceDao.queryListByDeviceId(searchSubDevicePageReq.getDeviceId(), entity.getId());
+            List<CategoryEntity> categories = categoryService.queryListById(Long.valueOf(entity.getSysCategoryId() + ""));
+            for (SubDeviceEntity subDeviceEntity : subDeviceEntityList) {
+                List<SubDevicePointRelEntity> subDevicePointRelEntityList = sysDeviceDao.getSubDevicePointRelList(subDeviceEntity.getId());
+                for (SubDevicePointRelEntity subRel : subDevicePointRelEntityList) {
+                    for (CategoryEntity categoryEntity : categories) {
+                        SubDevicePointRelEntity subDevicePointRelEntity = sysDeviceDao.getSubDevicePointRel(subDeviceEntity.getId(), subRel.getPointId(), categoryEntity.getId());
+                        if (subDevicePointRelEntity != null) {
+                            categoryEntity.setIsBind(true);
+                            categoryEntity.setPointName(subDevicePointRelEntity.getPointName());
+                        }
+                    }
+                }
+                subDeviceEntity.setCategorys(categories);
+            }
+            entity.setSubdevices(subDeviceEntityList);
+        }
+        return page;
+    }
 }

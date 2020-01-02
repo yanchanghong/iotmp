@@ -1,11 +1,13 @@
 package io.iotmp.modules.manage.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName
@@ -26,4 +28,6 @@ public class SubDeviceEntity implements Serializable {
     private Integer deviceId;// 父类ID
     private Date createTime;
     private Date updateTime;
+    @TableField(exist = false)
+    private List<CategoryEntity> categorys;
 }

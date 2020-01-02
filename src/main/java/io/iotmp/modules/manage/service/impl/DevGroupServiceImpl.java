@@ -56,6 +56,24 @@ public class DevGroupServiceImpl extends ServiceImpl<SysDevGroupDao, DevGroupEnt
     }
 
     @Override
+    public PageUtils queryListByTypeId(SearchDevGroupReq searchDevGroupReq) {
+        if (searchDevGroupReq.getPage() == null) {
+            searchDevGroupReq.setPage(1L);
+        }
+        if (searchDevGroupReq.getPageSize() == null) {
+            searchDevGroupReq.setPageSize(10L);
+        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("page", searchDevGroupReq.getPage() + "");
+        params.put("pageSize", searchDevGroupReq.getPageSize() + "");
+        IPage<DevGroupEntity> page = this.page(
+                new Query<DevGroupEntity>().getPage(params),
+                new QueryWrapper<DevGroupEntity>().eq("sys_dev_type_id", searchDevGroupReq.getDevTypeId()).orderByDesc("create_time")
+        );
+        return new PageUtils(page);
+    }
+
+    @Override
     public void add(AddDevGroupReq addDevGroupReq) {
         DevGroupEntity devGroupEntity = new DevGroupEntity();
         devGroupEntity.setSysCategoryId(addDevGroupReq.getSysCategoryId());

@@ -1,9 +1,7 @@
 package io.iotmp.modules.manage.controller;
 
 import io.iotmp.common.utils.R;
-import io.iotmp.modules.manage.vo.request.AddDeviceReq;
-import io.iotmp.modules.manage.vo.request.SearchPageReq;
-import io.iotmp.modules.manage.vo.request.UpdateDeviceReq;
+import io.iotmp.modules.manage.vo.request.*;
 import io.iotmp.modules.manage.service.DeviceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -67,8 +65,23 @@ public class SysProDeviceController {
     @ApiOperation(value = "添加子设备", notes = "添加子设备")
     @ResponseBody
     @PostMapping("/sub/add")
-    public R addSubDev(@RequestBody AddDeviceReq addDeviceReq) {
-        deviceService.add(addDeviceReq);
+    public R addSubDev(@RequestBody AddSubDeviceReq addSubDeviceReq) {
+        deviceService.addSubDev(addSubDeviceReq);
         return R.ok();
+    }
+
+    @ApiOperation(value = "绑定点位", notes = "绑定点位")
+    @ResponseBody
+    @PostMapping("/sub/bind")
+    public R addSubDev(@RequestBody AddSubDevicePointRelReq addSubDevicePointRelReq) {
+        deviceService.bindPoint(addSubDevicePointRelReq);
+        return R.ok();
+    }
+
+    @ApiOperation(value = "获取父设备下子设备得绑定点位", notes = "根据父设备得类别ID获取子设备绑定点位")
+    @ResponseBody
+    @GetMapping("/sub/list")
+    public R subList(SearchSubDevicePageReq searchSubDevicePageReq) {
+        return R.ok().put("data", deviceService.querySubDeviceList(searchSubDevicePageReq));
     }
 }

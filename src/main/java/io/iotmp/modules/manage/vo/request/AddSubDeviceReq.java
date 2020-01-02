@@ -18,11 +18,8 @@ public class AddSubDeviceReq {
     private Integer orgId;
     @ApiModelProperty(value = "子设备名称", required = true)
     private String name;
-    @ApiModelProperty(value = "父类ID")
-    private Integer parentId;
-    @ApiModelProperty(value = "设备状态")
-    private String status;
-    @ApiModelProperty(value = "设备类别ID", required = true)
+    @ApiModelProperty(value = "子设备类别ID", required = true)
     private Integer devTypeId;
-
+    @ApiModelProperty(value = "父类设备ID", required = true)
+    private Integer deviceId;
 }

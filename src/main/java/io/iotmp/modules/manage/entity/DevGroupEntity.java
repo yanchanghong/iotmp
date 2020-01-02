@@ -36,4 +36,6 @@ public class DevGroupEntity implements Serializable {
     private List<CategoryEntity> children;
     @TableField(exist = false)
     private List<PointGroupEntity> childrenPointGroup;
+    @TableField(exist = false)
+    private List<SubDeviceEntity> subdevices;
 }

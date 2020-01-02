@@ -1,5 +1,6 @@
 package io.iotmp.modules.manage.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -22,6 +23,9 @@ public class SubDevicePointRelEntity implements Serializable {
     private Integer id;
     private Integer subDeviceId;// 子设备ID
     private Integer pointId;// 点位ID
+    private Integer categoryId;
     private Date createTime;
     private Date updateTime;
+    @TableField(exist = false)
+    private String pointName;
 }

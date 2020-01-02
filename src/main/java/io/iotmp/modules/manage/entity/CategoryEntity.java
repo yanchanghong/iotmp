@@ -32,4 +32,8 @@ public class CategoryEntity implements Serializable {
     private Integer pointType;//点位类型，1可读，2可写，3可读可写
     @TableField(exist = false)
     private List<CategoryEntity> children; //节点集合
+    @TableField(exist = false)
+    private Boolean isBind; //该字典是否绑定点位
+    @TableField(exist = false)
+    private String pointName;
 }

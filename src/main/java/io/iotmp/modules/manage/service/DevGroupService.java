@@ -24,4 +24,6 @@ public interface DevGroupService extends IService<DevGroupEntity> {
     DevGroupEntity findByID(Long id);
 
     void deleteById(Long id);
+
+    PageUtils queryListByTypeId(SearchDevGroupReq searchDevGroupReq);
 }
