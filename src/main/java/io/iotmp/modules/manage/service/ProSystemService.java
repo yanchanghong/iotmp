@@ -3,10 +3,14 @@ package io.iotmp.modules.manage.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.iotmp.common.utils.PageUtils;
 import io.iotmp.modules.manage.entity.ProSystemEntity;
+import io.iotmp.modules.manage.entity.SystemDevRelEntity;
 import io.iotmp.modules.manage.vo.request.AddProSystemReq;
+import io.iotmp.modules.manage.vo.request.AddSystemDeviceReq;
 import io.iotmp.modules.manage.vo.request.SearchPageReq;
 import io.iotmp.modules.manage.vo.request.UpdateProSystemReq;
 import io.swagger.models.auth.In;
+
+import java.util.List;
 
 /**
  * @ClassName
@@ -26,4 +30,8 @@ public interface ProSystemService extends IService<ProSystemEntity> {
     ProSystemEntity findByID(Integer id);
 
     void deleteById(Integer id);
+
+    void addDevice(AddSystemDeviceReq addSystemDeviceReq);
+
+    List<SystemDevRelEntity> listDevices(Integer systemId, Integer deviceId);
 }

@@ -7,20 +7,28 @@ import io.iotmp.common.utils.PageUtils;
 import io.iotmp.common.utils.Query;
 import io.iotmp.modules.manage.dao.SysProSystemDao;
 import io.iotmp.modules.manage.entity.ProSystemEntity;
+import io.iotmp.modules.manage.entity.SystemDevRelEntity;
 import io.iotmp.modules.manage.service.ProSystemService;
 import io.iotmp.modules.manage.vo.request.AddProSystemReq;
+import io.iotmp.modules.manage.vo.request.AddSystemDeviceReq;
 import io.iotmp.modules.manage.vo.request.SearchPageReq;
 import io.iotmp.modules.manage.vo.request.UpdateProSystemReq;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service("ProSystemService")
 @Slf4j
 public class ProSystemServiceImpl extends ServiceImpl<SysProSystemDao, ProSystemEntity> implements ProSystemService {
+
+    @Autowired
+    private SysProSystemDao sysProSystemDao;
+
     @Override
     public PageUtils queryList(SearchPageReq searchProSystemReq) {
 
@@ -71,4 +79,19 @@ public class ProSystemServiceImpl extends ServiceImpl<SysProSystemDao, ProSystem
         baseMapper.deleteById(id);
     }
 
+    @Override
+    public void addDevice(AddSystemDeviceReq addSystemDeviceReq) {
+        SystemDevRelEntity systemDevRelEntity = new SystemDevRelEntity();
+        systemDevRelEntity.setSystemId(addSystemDeviceReq.getSystemId());
+        systemDevRelEntity.setDeviceId(addSystemDeviceReq.getDeviceId());
+        systemDevRelEntity.setRegionId(addSystemDeviceReq.getRegionId());
+        systemDevRelEntity.setDevPicId(addSystemDeviceReq.getDevPicId());
+        sysProSystemDao.addSystemDevRel(systemDevRelEntity);
+    }
+
+    @Override
+    public List<SystemDevRelEntity> listDevices(Integer systemId, Integer deviceId) {
+
+        return null;
+    }
 }

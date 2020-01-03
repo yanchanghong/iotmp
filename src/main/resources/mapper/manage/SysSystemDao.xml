@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.iotmp.modules.manage.dao.SysProSystemDao">
+
+
+    <insert id="addSystemDevRel" parameterType="io.iotmp.modules.manage.entity.SystemDevRelEntity">
+        insert into sys_system_dev_rel(system_id, device_id,region_id,dev_pic_id, create_time)
+               values(#{systemId}, #{deviceId}, #{regionId},#{devPicId},#{createTime})
+    </insert>
+
+    <select id="listDevices" resultType="io.iotmp.modules.manage.entity.SystemDevRelEntity">
+      select rel.id id, rel.system_id systemId, rel.device_id deviceId, rel.region_id regionId, rel.dev_pic_id devPicId,
+      rel.longitude longitude, rel.latitude latitude, rel.axis_x axisX, rel.axis_y axisY, dev.name deviceName, pic.codes picCodes
+      from sys_system_dev_rel rel left join sys_device dev on rel.device_id = dev.id
+      left Join sys_device_pic pic on rel.pic_id = pic.id
+      where rel.system_id = #{systemId} and rel.region_id = #{regionId}
+    </select>
+
+</mapper>
