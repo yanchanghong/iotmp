@@ -1,5 +1,6 @@
 package io.iotmp.modules.manage.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -27,4 +28,6 @@ public class DeviceEntity implements Serializable {
     private String status;// 设备状态
     private Date createTime;
     private Date updateTime;
+    @TableField(exist = false)
+    private String devTypeName;// 设备类别名称
 }

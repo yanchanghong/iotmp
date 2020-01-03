@@ -10,6 +10,7 @@ import io.iotmp.modules.manage.entity.*;
 import io.iotmp.modules.manage.service.CategoryService;
 import io.iotmp.modules.manage.service.DevGroupService;
 import io.iotmp.modules.manage.service.DeviceService;
+import io.iotmp.modules.manage.service.DevTypeService;
 
 import io.iotmp.modules.manage.vo.request.*;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,8 @@ public class DeviceServiceImpl extends ServiceImpl<SysDeviceDao, DeviceEntity> i
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private DevTypeService devTypeService;
 
     @Override
     public PageUtils queryList(SearchPageReq searchDeviceReq) {
@@ -50,7 +53,12 @@ public class DeviceServiceImpl extends ServiceImpl<SysDeviceDao, DeviceEntity> i
                 new Query<DeviceEntity>().getPage(params),
                 new QueryWrapper<DeviceEntity>().eq("org_id", searchDeviceReq.getOrgId()).orderByDesc("create_time")
         );
-
+        for (DeviceEntity deviceEntity : page.getRecords()) {
+            DevTypeEntity devTypeEntity = devTypeService.findByID(Long.valueOf(deviceEntity.getDevTypeId() + ""));
+            if (devTypeEntity != null) {
+                deviceEntity.setDevTypeName(devTypeEntity.getName());
+            }
+        }
         return new PageUtils(page);
     }
 
