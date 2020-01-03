@@ -14,6 +14,7 @@ import io.iotmp.modules.manage.service.DevTypeService;
 
 import io.iotmp.modules.manage.vo.request.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,20 +39,20 @@ public class DeviceServiceImpl extends ServiceImpl<SysDeviceDao, DeviceEntity> i
     private DevTypeService devTypeService;
 
     @Override
-    public PageUtils queryList(SearchPageReq searchDeviceReq) {
+    public PageUtils queryList(SearchDevicePageReq searchDevicePageReq) {
 
-        if (searchDeviceReq.getPage() == null) {
-            searchDeviceReq.setPage(1L);
+        if (searchDevicePageReq.getPage() == null) {
+            searchDevicePageReq.setPage(1L);
         }
-        if (searchDeviceReq.getPageSize() == null) {
-            searchDeviceReq.setPageSize(10L);
+        if (searchDevicePageReq.getPageSize() == null) {
+            searchDevicePageReq.setPageSize(10L);
         }
         Map<String, Object> params = new HashMap<>();
-        params.put("page", searchDeviceReq.getPage() + "");
-        params.put("pageSize", searchDeviceReq.getPageSize() + "");
+        params.put("page", searchDevicePageReq.getPage() + "");
+        params.put("pageSize", searchDevicePageReq.getPageSize() + "");
         IPage<DeviceEntity> page = this.page(
                 new Query<DeviceEntity>().getPage(params),
-                new QueryWrapper<DeviceEntity>().eq("org_id", searchDeviceReq.getOrgId()).orderByDesc("create_time")
+                new QueryWrapper<DeviceEntity>().eq("org_id", searchDevicePageReq.getOrgId()).like(StringUtils.isNotEmpty(searchDevicePageReq.getName()), "name", searchDevicePageReq.getName()).orderByDesc("create_time")
         );
         for (DeviceEntity deviceEntity : page.getRecords()) {
             DevTypeEntity devTypeEntity = devTypeService.findByID(Long.valueOf(deviceEntity.getDevTypeId() + ""));

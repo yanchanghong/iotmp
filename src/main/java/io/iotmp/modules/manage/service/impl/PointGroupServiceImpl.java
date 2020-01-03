@@ -49,6 +49,7 @@ public class PointGroupServiceImpl extends ServiceImpl<SysPointGroupDao, PointGr
             List<PointGroupEntity> pointGroupEntityList = baseMapper.selectList(new QueryWrapper<PointGroupEntity>().eq("dev_type_id", groupEntity.getId()).orderByDesc("create_time"));
             groupEntity.setChildrenPointGroup(pointGroupEntityList);
             for (PointGroupEntity entity : pointGroupEntityList) {
+                entity.setIsShowAddCategory(true);
                 List<CategoryEntity> categories = sysPointGroupDao.queryListByPointId(entity.getId());
                 entity.setChildren(categories);
             }

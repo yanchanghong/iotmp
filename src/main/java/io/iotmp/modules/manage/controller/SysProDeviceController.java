@@ -27,8 +27,8 @@ public class SysProDeviceController {
     @ApiOperation(value = "获取设备列表", notes = "获取设备列表")
     @ResponseBody
     @GetMapping("/list")
-    public R list(SearchPageReq searchPageReq) {
-        return R.ok().put("data", deviceService.queryList(searchPageReq));
+    public R list(SearchDevicePageReq searchDevicePageReq) {
+        return R.ok().put("data", deviceService.queryList(searchDevicePageReq));
     }
 
     @ApiOperation(value = "添加设备", notes = "添加设备")

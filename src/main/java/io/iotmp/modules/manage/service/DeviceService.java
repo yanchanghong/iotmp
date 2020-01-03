@@ -16,7 +16,7 @@ import io.swagger.models.auth.In;
  **/
 public interface DeviceService extends IService<DeviceEntity> {
 
-    PageUtils queryList(SearchPageReq searchPageReq);
+    PageUtils queryList(SearchDevicePageReq searchDevicePageReq);
 
     void add(AddDeviceReq addDeviceReq);
 

@@ -9,7 +9,7 @@
     </insert>
 
     <insert id="insertSubDevicePointRel" parameterType="io.iotmp.modules.manage.entity.SubDevicePointRelEntity">
-        insert into sys_sub_device(sub_device_id,point_id,create_time,category_id)
+        insert into sys_dev_point_rel(sub_device_id,point_id,create_time,category_id)
                values(#{subDeviceId}, #{pointId},#{createTime}, #{categoryId})
     </insert>
 
