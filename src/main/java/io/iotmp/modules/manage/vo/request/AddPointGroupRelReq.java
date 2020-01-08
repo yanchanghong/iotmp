@@ -15,7 +15,7 @@ import lombok.Data;
 @ApiModel(description = "给点位分组添加点位类别请求")
 public class AddPointGroupRelReq {
     @ApiModelProperty(value = "点位字典ID", required = true)
-    private Integer categoryTypeId;
+    private Integer categoryId;
     @ApiModelProperty(value = "点位分组ID")
     private Integer pointGroupId;
 }

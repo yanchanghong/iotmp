@@ -98,7 +98,7 @@ public class PointGroupServiceImpl extends ServiceImpl<SysPointGroupDao, PointGr
     @Override
     public void bindCategory(AddPointGroupRelReq addPointGroupRelReq) {
         PointGroupRelEntity pointGroupRelEntity = new PointGroupRelEntity();
-        pointGroupRelEntity.setCategoryId(addPointGroupRelReq.getCategoryTypeId());
+        pointGroupRelEntity.setCategoryId(addPointGroupRelReq.getCategoryId());
         pointGroupRelEntity.setPointGroupId(addPointGroupRelReq.getPointGroupId());
         pointGroupRelEntity.setCreateTime(new Date());
         sysPointGroupDao.insertPointGroupRel(pointGroupRelEntity);

@@ -47,7 +47,6 @@ public class RegionServiceImpl extends ServiceImpl<SystemRegionDao, RegionEntity
         List<RegionEntity> sysRegionList = page.getRecords();
         for (RegionEntity region : sysRegionList) {
             List<RegionEntity> devRegionList = baseMapper.selectList(new QueryWrapper<RegionEntity>().eq("parent_id", region.getId()).orderByDesc("create_time"));
-            region.setChildren(devRegionList);
             if (CollectionUtils.isEmpty(devRegionList)) {
                 region.setHasChildren(false);
             } else {
@@ -79,7 +78,6 @@ public class RegionServiceImpl extends ServiceImpl<SystemRegionDao, RegionEntity
 
     @Override
     public void update(UpdateRegionReq updateRegionReq) {
-        log.info("updateRegionreq:{}", updateRegionReq);
         RegionEntity regionEntity = baseMapper.selectById(updateRegionReq.getId());
         if (regionEntity != null) {
             regionEntity.setName(updateRegionReq.getName());
