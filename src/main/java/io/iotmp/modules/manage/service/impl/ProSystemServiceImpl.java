@@ -91,6 +91,7 @@ public class ProSystemServiceImpl extends ServiceImpl<SysProSystemDao, ProSystem
 
     @Override
     public List<SystemDevRelEntity> listDevices(Integer systemId, Integer deviceId) {
+        List<SystemDevRelEntity> systemDevRelList = sysProSystemDao.listDevices(systemId, deviceId);
 
         return null;
     }
